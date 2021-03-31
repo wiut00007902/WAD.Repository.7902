@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ManagementApplication.Models
 {
     public class Region
     {
         public int Id { get; set; }
-        public DateTime CreationDate { get; set; }
         public string RegionName { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }
