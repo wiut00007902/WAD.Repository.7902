@@ -11,7 +11,7 @@ namespace ManagementApplication.Models
     {
         // Id of the Task
         public int Id { get; set; }
-        // Date of the creation of task. Not required field, as it will be set automaitcally
+        // Date of the creation of the task. Not required field, as it will be set automaitcally
         public DateTime CreationTime { get; set; }
         // Data annotations for TaskDeskription string, which requires the field had at least 100 symbols (MinLength). If the field is empty, it requires the user to fill it (Required)
         [Required(ErrorMessage = "You have to describe the task"), MinLength(100, ErrorMessage = "Task description is too short. It should be at least 100 symbols.")]
