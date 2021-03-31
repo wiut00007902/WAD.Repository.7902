@@ -22,7 +22,8 @@ namespace ManagementApplication.Controllers
         // GET: Departments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Departments.ToListAsync());
+            var managementApplicationDbContext = _context.Departments.Include(d => d.Region);
+            return View(await managementApplicationDbContext.ToListAsync());
         }
 
         // GET: Departments/Details/5
@@ -34,6 +35,7 @@ namespace ManagementApplication.Controllers
             }
 
             var department = await _context.Departments
+                .Include(d => d.Region)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (department == null)
             {
@@ -46,6 +48,7 @@ namespace ManagementApplication.Controllers
         // GET: Departments/Create
         public IActionResult Create()
         {
+            ViewData["RegionId"] = new SelectList(_context.Regions, "Id", "RegionName");
             return View();
         }
 
@@ -54,15 +57,16 @@ namespace ManagementApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CreationDate,DepartmentName,RegionId,ManagerId")] Department department)
+        public async Task<IActionResult> Create([Bind("Id,CreationDate,DepartmentName,RegionId")] Department department)
         {
+            department.CreationDate = DateTime.Now;
             if (ModelState.IsValid)
             {
-                department.CreationDate = DateTime.Now;
                 _context.Add(department);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["RegionId"] = new SelectList(_context.Regions, "Id", "RegionName", department.RegionId);
             return View(department);
         }
 
@@ -79,6 +83,7 @@ namespace ManagementApplication.Controllers
             {
                 return NotFound();
             }
+            ViewData["RegionId"] = new SelectList(_context.Regions, "Id", "RegionName", department.RegionId);
             return View(department);
         }
 
@@ -87,7 +92,7 @@ namespace ManagementApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CreationDate,DepartmentName,RegionId,ManagerId")] Department department)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CreationDate,DepartmentName,RegionId")] Department department)
         {
             if (id != department.Id)
             {
@@ -114,6 +119,7 @@ namespace ManagementApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["RegionId"] = new SelectList(_context.Regions, "Id", "RegionName", department.RegionId);
             return View(department);
         }
 
@@ -126,6 +132,7 @@ namespace ManagementApplication.Controllers
             }
 
             var department = await _context.Departments
+                .Include(d => d.Region)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (department == null)
             {

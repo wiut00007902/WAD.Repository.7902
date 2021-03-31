@@ -22,7 +22,8 @@ namespace ManagementApplication.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Employees.ToListAsync());
+            var managementApplicationDbContext = _context.Employees.Include(e => e.Department);
+            return View(await managementApplicationDbContext.ToListAsync());
         }
 
         // GET: Employees/Details/5
@@ -34,6 +35,7 @@ namespace ManagementApplication.Controllers
             }
 
             var employee = await _context.Employees
+                .Include(e => e.Department)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (employee == null)
             {
@@ -46,6 +48,7 @@ namespace ManagementApplication.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "DepartmentName");
             return View();
         }
 
@@ -54,14 +57,16 @@ namespace ManagementApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,DateOfBirth,Gender,PassportNo,Address,Phone,Email,DepartmentId,Position,Salary,Schedule,ManagerId,EmployedOnDate,IsManager")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,DateOfBirth,Gender,PassportNo,Address,Phone,Email,DepartmentId,Position,Salary,Schedule,EmploymentDate")] Employee employee)
         {
+            employee.EmploymentDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "DepartmentName", employee.DepartmentId);
             return View(employee);
         }
 
@@ -78,6 +83,7 @@ namespace ManagementApplication.Controllers
             {
                 return NotFound();
             }
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "DepartmentName", employee.DepartmentId);
             return View(employee);
         }
 
@@ -86,7 +92,7 @@ namespace ManagementApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,DateOfBirth,Gender,PassportNo,Address,Phone,Email,DepartmentId,Position,Salary,Schedule,ManagerId,EmployedOnDate,IsManager")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,DateOfBirth,Gender,PassportNo,Address,Phone,Email,DepartmentId,Position,Salary,Schedule,EmploymentDate")] Employee employee)
         {
             if (id != employee.Id)
             {
@@ -113,6 +119,7 @@ namespace ManagementApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "DepartmentName", employee.DepartmentId);
             return View(employee);
         }
 
@@ -125,6 +132,7 @@ namespace ManagementApplication.Controllers
             }
 
             var employee = await _context.Employees
+                .Include(e => e.Department)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (employee == null)
             {
