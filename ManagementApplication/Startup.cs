@@ -1,4 +1,6 @@
 using ManagementApplication.DAL;
+using ManagementApplication.DAL.DBO;
+using ManagementApplication.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +28,10 @@ namespace ManagementApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<IRepository<Region>, RegionRepository>();
+            services.AddScoped<IRepository<Department>, DepartmentRepository>();
+            services.AddScoped<IRepository<Employee>, EmployeeRepository>();
+            services.AddScoped<IRepository<DAL.DBO.Task>, TaskRepository>();
             services.AddDbContext<ManagementApplicationDbContext>(
                 options => options.UseSqlServer(
                     Configuration.GetConnectionString("ManagementApplication")

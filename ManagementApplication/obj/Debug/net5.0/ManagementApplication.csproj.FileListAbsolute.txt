@@ -163,3 +163,5 @@ C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication\obj\Debu
 C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication\obj\Debug\net5.0\Razor\Views\Tasks\Details.cshtml.g.cs
 C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication\obj\Debug\net5.0\Razor\Views\Tasks\Edit.cshtml.g.cs
 C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication\obj\Debug\net5.0\Razor\Views\Tasks\Index.cshtml.g.cs
+C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication\bin\Debug\net5.0\ManagementApplication.DAL.dll
+C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication\bin\Debug\net5.0\ManagementApplication.DAL.pdb

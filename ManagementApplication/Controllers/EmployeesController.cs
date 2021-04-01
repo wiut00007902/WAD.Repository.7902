@@ -7,23 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ManagementApplication.DAL;
 using ManagementApplication.Models;
+using ManagementApplication.DAL.Repositories;
+using ManagementApplication.DAL.DBO;
 
 namespace ManagementApplication.Controllers
 {
     public class EmployeesController : Controller
     {
-        private readonly ManagementApplicationDbContext _context;
+        private readonly IRepository<Employee> _employeeRepository;
+        private readonly IRepository<Department> _departmentRepository;
 
-        public EmployeesController(ManagementApplicationDbContext context)
+        public EmployeesController(IRepository<Employee> employeeRepository,
+            IRepository<Department> departmentRepository)
         {
-            _context = context;
+            _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;
         }
 
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var managementApplicationDbContext = _context.Employees.Include(e => e.Department);
-            return View(await managementApplicationDbContext.ToListAsync());
+            return View(await _employeeRepository.GetAllAsync());
         }
 
         // GET: Employees/Details/5
@@ -34,9 +38,7 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .Include(e => e.Department)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var employee = await _employeeRepository.GetByIdAsync(id.Value);
             if (employee == null)
             {
                 return NotFound();
@@ -46,9 +48,9 @@ namespace ManagementApplication.Controllers
         }
 
         // GET: Employees/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "DepartmentName");
+            ViewData["DepartmentId"] = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName");
             return View();
         }
 
@@ -62,11 +64,10 @@ namespace ManagementApplication.Controllers
             employee.EmploymentDate = DateTime.Now;
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
-                await _context.SaveChangesAsync();
+                await _employeeRepository.CreateAsync(employee);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "DepartmentName", employee.DepartmentId);
+            ViewData["DepartmentId"] = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName", employee.DepartmentId);
             return View(employee);
         }
 
@@ -78,12 +79,12 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = await _employeeRepository.GetByIdAsync(id.Value);
             if (employee == null)
             {
                 return NotFound();
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "DepartmentName", employee.DepartmentId);
+            ViewData["DepartmentId"] = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName", employee.DepartmentId);
             return View(employee);
         }
 
@@ -103,12 +104,11 @@ namespace ManagementApplication.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
+                    await _employeeRepository.UpdateAsync(employee);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.Id))
+                    if (!_employeeRepository.Exists(employee.Id))
                     {
                         return NotFound();
                     }
@@ -119,7 +119,7 @@ namespace ManagementApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "DepartmentName", employee.DepartmentId);
+            ViewData["DepartmentId"] = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName", employee.DepartmentId);
             return View(employee);
         }
 
@@ -131,9 +131,7 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .Include(e => e.Department)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var employee = await _employeeRepository.GetByIdAsync(id.Value);
             if (employee == null)
             {
                 return NotFound();
@@ -147,15 +145,8 @@ namespace ManagementApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
+            await _employeeRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employees.Any(e => e.Id == id);
         }
     }
 }

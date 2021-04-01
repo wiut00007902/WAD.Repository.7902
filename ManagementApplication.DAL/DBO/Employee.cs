@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace ManagementApplication.Models
+namespace ManagementApplication.DAL.DBO
 {
     public class Employee
     {
         [Display(Name = "Employee ID")]
-        // ID of the employee
         public int Id { get; set; }
         [Required(ErrorMessage = "Please, insert the first name"), MinLength(2, ErrorMessage = "First name must be at least 2 symbols"), Display(Name = "First name")]
         public string FirstName { get; set; }

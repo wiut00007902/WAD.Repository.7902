@@ -7,23 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ManagementApplication.DAL;
 using ManagementApplication.Models;
+using ManagementApplication.DAL.Repositories;
+using ManagementApplication.DAL.DBO;
 
 namespace ManagementApplication.Controllers
 {
     public class DepartmentsController : Controller
     {
-        private readonly ManagementApplicationDbContext _context;
+        private readonly IRepository<Department> _departmentRepository;
+        private readonly IRepository<Region> _regionRepository;
 
-        public DepartmentsController(ManagementApplicationDbContext context)
+        public DepartmentsController(IRepository<Department> departmentRepository,
+            IRepository<Region> regionRepository)
         {
-            _context = context;
+            _departmentRepository = departmentRepository;
+            _regionRepository = regionRepository;
         }
 
         // GET: Departments
         public async Task<IActionResult> Index()
         {
-            var managementApplicationDbContext = _context.Departments.Include(d => d.Region);
-            return View(await managementApplicationDbContext.ToListAsync());
+            return View(await _departmentRepository.GetAllAsync());
         }
 
         // GET: Departments/Details/5
@@ -34,9 +38,7 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            var department = await _context.Departments
-                .Include(d => d.Region)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var department = await _departmentRepository.GetByIdAsync(id.Value);
             if (department == null)
             {
                 return NotFound();
@@ -46,9 +48,9 @@ namespace ManagementApplication.Controllers
         }
 
         // GET: Departments/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["RegionId"] = new SelectList(_context.Regions, "Id", "RegionName");
+            ViewData["RegionId"] = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName");
             return View();
         }
 
@@ -62,11 +64,10 @@ namespace ManagementApplication.Controllers
             department.CreationDate = DateTime.Now;
             if (ModelState.IsValid)
             {
-                _context.Add(department);
-                await _context.SaveChangesAsync();
+                await _departmentRepository.CreateAsync(department);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RegionId"] = new SelectList(_context.Regions, "Id", "RegionName", department.RegionId);
+            ViewData["RegionId"] = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName", department.RegionId);
             return View(department);
         }
 
@@ -78,12 +79,12 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            var department = await _context.Departments.FindAsync(id);
+            var department = await _departmentRepository.GetByIdAsync(id.Value);
             if (department == null)
             {
                 return NotFound();
             }
-            ViewData["RegionId"] = new SelectList(_context.Regions, "Id", "RegionName", department.RegionId);
+            ViewData["RegionId"] = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName", department.RegionId);
             return View(department);
         }
 
@@ -103,12 +104,11 @@ namespace ManagementApplication.Controllers
             {
                 try
                 {
-                    _context.Update(department);
-                    await _context.SaveChangesAsync();
+                    await _departmentRepository.UpdateAsync(department);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DepartmentExists(department.Id))
+                    if (!_departmentRepository.Exists(department.Id))
                     {
                         return NotFound();
                     }
@@ -119,7 +119,7 @@ namespace ManagementApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RegionId"] = new SelectList(_context.Regions, "Id", "RegionName", department.RegionId);
+            ViewData["RegionId"] = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName", department.RegionId);
             return View(department);
         }
 
@@ -131,9 +131,7 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            var department = await _context.Departments
-                .Include(d => d.Region)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var department = await _departmentRepository.GetByIdAsync(id.Value);
             if (department == null)
             {
                 return NotFound();
@@ -147,15 +145,8 @@ namespace ManagementApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var department = await _context.Departments.FindAsync(id);
-            _context.Departments.Remove(department);
-            await _context.SaveChangesAsync();
+            await _departmentRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool DepartmentExists(int id)
-        {
-            return _context.Departments.Any(e => e.Id == id);
         }
     }
 }

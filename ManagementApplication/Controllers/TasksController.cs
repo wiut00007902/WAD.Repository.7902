@@ -7,23 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ManagementApplication.DAL;
 using ManagementApplication.Models;
+using ManagementApplication.DAL.Repositories;
+using ManagementApplication.DAL.DBO;
 
 namespace ManagementApplication.Controllers
 {
     public class TasksController : Controller
     {
-        private readonly ManagementApplicationDbContext _context;
+        private readonly IRepository<DAL.DBO.Task> _taskRepository;
+        private readonly IRepository<Employee> _employeeRepository;
 
-        public TasksController(ManagementApplicationDbContext context)
+        public TasksController(IRepository<DAL.DBO.Task> taskRepository,
+            IRepository<Employee> employeeRepository)
         {
-            _context = context;
+            _taskRepository = taskRepository;
+            _employeeRepository = employeeRepository;
         }
 
         // GET: Tasks
         public async Task<IActionResult> Index()
         {
-            var managementApplicationDbContext = _context.Tasks.Include(t => t.Employee);
-            return View(await managementApplicationDbContext.ToListAsync());
+            return View(await _taskRepository.GetAllAsync());
         }
 
         // GET: Tasks/Details/5
@@ -34,9 +38,7 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            var task = await _context.Tasks
-                .Include(t => t.Employee)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var task = await _taskRepository.GetByIdAsync(id.Value);
             if (task == null)
             {
                 return NotFound();
@@ -46,10 +48,11 @@ namespace ManagementApplication.Controllers
         }
 
         // GET: Tasks/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["EmployeeId"] = new SelectList((from employee in _context.Employees.ToList()
-                                                     select new {Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName }), "Id", "FullName");
+            ViewData["EmployeeId"] = new SelectList((from employee in await _employeeRepository.GetAllAsync()
+                                                     select new {Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName })
+                                                     , "Id", "FullName");
             return View();
         }
 
@@ -58,17 +61,17 @@ namespace ManagementApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CreationTime,TaskName,TaskDescription,EmployeeId,Deadline")] Models.Task task)
+        public async Task<IActionResult> Create([Bind("Id,CreationTime,TaskName,TaskDescription,EmployeeId,Deadline")] DAL.DBO.Task task)
         {
             task.CreationTime = DateTime.Now;
             if (ModelState.IsValid)
             {
-                _context.Add(task);
-                await _context.SaveChangesAsync();
+                await _taskRepository.CreateAsync(task);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList((from employee in _context.Employees.ToList()
-                                                     select new { Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName }), "Id", "FullName", task.EmployeeId);
+            ViewData["EmployeeId"] = new SelectList((from employee in await _employeeRepository.GetAllAsync()
+                                                     select new { Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName })
+                                                     , "Id", "FullName", task.EmployeeId);
             return View(task);
         }
 
@@ -80,13 +83,14 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            var task = await _context.Tasks.FindAsync(id);
+            var task = await _taskRepository.GetByIdAsync(id.Value);
             if (task == null)
             {
                 return NotFound();
             }
-            ViewData["EmployeeId"] = new SelectList((from employee in _context.Employees.ToList()
-                                                     select new { Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName }), "Id", "FullName", task.EmployeeId);
+            ViewData["EmployeeId"] = new SelectList((from employee in await _employeeRepository.GetAllAsync()
+                                                     select new { Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName })
+                                                     , "Id", "FullName", task.EmployeeId);
             return View(task);
         }
 
@@ -95,7 +99,7 @@ namespace ManagementApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CreationTime,TaskName,TaskDescription,EmployeeId,Deadline")] Models.Task task)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CreationTime,TaskName,TaskDescription,EmployeeId,Deadline")] DAL.DBO.Task task)
         {
             if (id != task.Id)
             {
@@ -106,12 +110,11 @@ namespace ManagementApplication.Controllers
             {
                 try
                 {
-                    _context.Update(task);
-                    await _context.SaveChangesAsync();
+                    await _taskRepository.UpdateAsync(task);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TaskExists(task.Id))
+                    if (!_taskRepository.Exists(task.Id))
                     {
                         return NotFound();
                     }
@@ -122,8 +125,9 @@ namespace ManagementApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList((from employee in _context.Employees.ToList()
-                                                     select new { Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName }), "Id", "FullName", task.EmployeeId);
+            ViewData["EmployeeId"] = new SelectList((from employee in await _employeeRepository.GetAllAsync()
+                                                     select new { Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName })
+                                                     , "Id", "FullName", task.EmployeeId);
             return View(task);
         }
 
@@ -135,9 +139,7 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            var task = await _context.Tasks
-                .Include(t => t.Employee)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var task = await _taskRepository.GetByIdAsync(id.Value);
             if (task == null)
             {
                 return NotFound();
@@ -151,15 +153,8 @@ namespace ManagementApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var task = await _context.Tasks.FindAsync(id);
-            _context.Tasks.Remove(task);
-            await _context.SaveChangesAsync();
+            await _taskRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool TaskExists(int id)
-        {
-            return _context.Tasks.Any(e => e.Id == id);
         }
     }
 }

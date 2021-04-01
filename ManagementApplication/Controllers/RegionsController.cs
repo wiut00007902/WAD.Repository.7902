@@ -7,22 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ManagementApplication.DAL;
 using ManagementApplication.Models;
+using ManagementApplication.DAL.Repositories;
+using ManagementApplication.DAL.DBO;
 
 namespace ManagementApplication.Controllers
 {
     public class RegionsController : Controller
     {
-        private readonly ManagementApplicationDbContext _context;
+        private readonly IRepository<Region> _regionRepository;
 
-        public RegionsController(ManagementApplicationDbContext context)
+        public RegionsController(IRepository<Region> regionRepository)
         {
-            _context = context;
+            _regionRepository = regionRepository;
         }
 
         // GET: Regions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Regions.ToListAsync());
+            return View(await _regionRepository.GetAllAsync());
         }
 
         // GET: Regions/Details/5
@@ -33,8 +35,7 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            var region = await _context.Regions
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var region = await _regionRepository.GetByIdAsync(id.Value);
             if (region == null)
             {
                 return NotFound();
@@ -59,8 +60,7 @@ namespace ManagementApplication.Controllers
             if (ModelState.IsValid)
             {
                 region.CreationDate = DateTime.Now;
-                _context.Add(region);
-                await _context.SaveChangesAsync();
+                await _regionRepository.CreateAsync(region);
                 return RedirectToAction(nameof(Index));
             }
             return View(region);
@@ -74,7 +74,7 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            var region = await _context.Regions.FindAsync(id);
+            var region = await _regionRepository.GetByIdAsync(id.Value);
             if (region == null)
             {
                 return NotFound();
@@ -98,12 +98,11 @@ namespace ManagementApplication.Controllers
             {
                 try
                 {
-                    _context.Update(region);
-                    await _context.SaveChangesAsync();
+                    await _regionRepository.UpdateAsync(region);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RegionExists(region.Id))
+                    if (!_regionRepository.Exists(region.Id))
                     {
                         return NotFound();
                     }
@@ -125,8 +124,7 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            var region = await _context.Regions
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var region = await _regionRepository.GetByIdAsync(id.Value);
             if (region == null)
             {
                 return NotFound();
@@ -140,15 +138,8 @@ namespace ManagementApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var region = await _context.Regions.FindAsync(id);
-            _context.Regions.Remove(region);
-            await _context.SaveChangesAsync();
+            await _regionRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool RegionExists(int id)
-        {
-            return _context.Regions.Any(e => e.Id == id);
         }
     }
 }

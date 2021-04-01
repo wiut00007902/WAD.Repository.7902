@@ -1,4 +1,4 @@
-﻿using ManagementApplication.Models;
+﻿using ManagementApplication.DAL.DBO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,6 +16,6 @@ namespace ManagementApplication.DAL
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Region> Regions { get; set; }
-        public virtual DbSet<Models.Task> Tasks { get; set; }
+        public virtual DbSet<DBO.Task> Tasks { get; set; }
     }
 }

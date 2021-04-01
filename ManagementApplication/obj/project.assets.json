@@ -2010,6 +2010,21 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "ManagementApplication.DAL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "5.0.4",
+          "Microsoft.EntityFrameworkCore.Relational": "5.0.4",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.4"
+        },
+        "compile": {
+          "bin/placeholder/ManagementApplication.DAL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ManagementApplication.DAL.dll": {}
+        }
       }
     }
   },
@@ -7138,10 +7153,16 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "ManagementApplication.DAL/1.0.0": {
+      "type": "project",
+      "path": "../ManagementApplication.DAL/ManagementApplication.DAL.csproj",
+      "msbuildProject": "../ManagementApplication.DAL/ManagementApplication.DAL.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "ManagementApplication.DAL >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 5.0.4",
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.4",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.4",
@@ -7174,7 +7195,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Alo\\Documents\\GitHub\\WAD.Repository.7902\\ManagementApplication.DAL\\ManagementApplication.DAL.csproj": {
+              "projectPath": "C:\\Users\\Alo\\Documents\\GitHub\\WAD.Repository.7902\\ManagementApplication.DAL\\ManagementApplication.DAL.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
