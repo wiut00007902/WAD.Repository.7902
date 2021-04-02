@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace ManagementApplication.DAL.Repositories
 {
-    public class EmployeeRepository : IRepository<Employee>
+    public class EmployeeRepository : BaseRepository, IRepository<Employee>
     {
-        private readonly ManagementApplicationDbContext _context;
-        public EmployeeRepository(ManagementApplicationDbContext context)
+        public EmployeeRepository(ManagementApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public async System.Threading.Tasks.Task CreateAsync(Employee entity)
@@ -24,8 +22,8 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task DeleteAsync(int id)
         {
-            var region = await _context.Regions.FindAsync(id);
-            _context.Regions.Remove(region);
+            var employee = await _context.Employees.FindAsync(id);
+            _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
         }
 

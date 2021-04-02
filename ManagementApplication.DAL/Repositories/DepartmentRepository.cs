@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace ManagementApplication.DAL.Repositories
 {
-    public class DepartmentRepository : IRepository<Department>
+    public class DepartmentRepository : BaseRepository, IRepository<Department>
     {
-        private readonly ManagementApplicationDbContext _context;
-        public DepartmentRepository(ManagementApplicationDbContext context)
+        public DepartmentRepository(ManagementApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public async System.Threading.Tasks.Task CreateAsync(Department entity)

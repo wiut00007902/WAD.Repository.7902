@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace ManagementApplication.DAL.Repositories
 {
-    public class TaskRepository : IRepository<DBO.Task>
+    public class TaskRepository : BaseRepository, IRepository<DBO.Task>
     {
-        private readonly ManagementApplicationDbContext _context;
-        public TaskRepository(ManagementApplicationDbContext context)
+        public TaskRepository(ManagementApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public async System.Threading.Tasks.Task CreateAsync(DBO.Task entity)

@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace ManagementApplication.DAL.Repositories
 {
-    public class RegionRepository : IRepository<Region>
+    public class RegionRepository : BaseRepository, IRepository<Region>
     {
-        private readonly ManagementApplicationDbContext _context;
-        public RegionRepository(ManagementApplicationDbContext context)
+        public RegionRepository(ManagementApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public async System.Threading.Tasks.Task CreateAsync(Region entity)

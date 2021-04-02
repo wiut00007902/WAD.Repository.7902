@@ -9,3 +9,4 @@ C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication.DAL\bin\
 C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication.DAL\obj\Debug\net5.0\ManagementApplication.DAL.dll
 C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication.DAL\obj\Debug\net5.0\ref\ManagementApplication.DAL.dll
 C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication.DAL\obj\Debug\net5.0\ManagementApplication.DAL.pdb
+C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication.DAL\obj\Debug\net5.0\ManagementApplication.DAL.csprojAssemblyReference.cache
