@@ -50,8 +50,9 @@ namespace ManagementApplication.Controllers
         // GET: Departments/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["RegionId"] = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName");
-            return View();
+            var departmentViewModel = new DepartmentViewModel();
+            departmentViewModel.Regions = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName");
+            return View(departmentViewModel);
         }
 
         // POST: Departments/Create
@@ -59,7 +60,7 @@ namespace ManagementApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CreationDate,DepartmentName,RegionId")] Department department)
+        public async Task<IActionResult> Create([Bind("Id,CreationDate,DepartmentName,RegionId")] DepartmentViewModel department)
         {
             department.CreationDate = DateTime.Now;
             if (ModelState.IsValid)
@@ -67,7 +68,7 @@ namespace ManagementApplication.Controllers
                 await _departmentRepository.CreateAsync(department);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RegionId"] = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName", department.RegionId);
+            department.Regions = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName", department.RegionId);
             return View(department);
         }
 
@@ -84,8 +85,10 @@ namespace ManagementApplication.Controllers
             {
                 return NotFound();
             }
-            ViewData["RegionId"] = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName", department.RegionId);
-            return View(department);
+            var departmentViewModel = new DepartmentViewModel();
+            departmentViewModel.Id = department.Id;
+            departmentViewModel.Regions = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName", department.RegionId);
+            return View(departmentViewModel);
         }
 
         // POST: Departments/Edit/5
@@ -93,7 +96,7 @@ namespace ManagementApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CreationDate,DepartmentName,RegionId")] Department department)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CreationDate,DepartmentName,RegionId")] DepartmentViewModel department)
         {
             if (id != department.Id)
             {
@@ -119,7 +122,7 @@ namespace ManagementApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RegionId"] = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName", department.RegionId);
+            department.Regions = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName", department.RegionId);
             return View(department);
         }
 

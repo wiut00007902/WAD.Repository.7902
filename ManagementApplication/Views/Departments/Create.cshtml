@@ -1,4 +1,4 @@
-﻿@model ManagementApplication.DAL.DBO.Department
+﻿@model ManagementApplication.Models.DepartmentViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="RegionId" class="control-label"></label>
-                <select asp-for="RegionId" class ="form-control" asp-items="ViewBag.RegionId"></select>
+                <select asp-for="RegionId" class ="form-control" asp-items="Model.Regions"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

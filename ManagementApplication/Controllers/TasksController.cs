@@ -50,10 +50,11 @@ namespace ManagementApplication.Controllers
         // GET: Tasks/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["EmployeeId"] = new SelectList((from employee in await _employeeRepository.GetAllAsync()
+            var taskViewModel = new TaskViewModel();
+            taskViewModel.Employees = new SelectList((from employee in await _employeeRepository.GetAllAsync()
                                                      select new {Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName })
                                                      , "Id", "FullName");
-            return View();
+            return View(taskViewModel);
         }
 
         // POST: Tasks/Create
@@ -61,7 +62,7 @@ namespace ManagementApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CreationTime,TaskName,TaskDescription,EmployeeId,Deadline")] DAL.DBO.Task task)
+        public async Task<IActionResult> Create([Bind("Id,CreationTime,TaskName,TaskDescription,EmployeeId,Deadline")] TaskViewModel task)
         {
             task.CreationTime = DateTime.Now;
             if (ModelState.IsValid)
@@ -69,7 +70,7 @@ namespace ManagementApplication.Controllers
                 await _taskRepository.CreateAsync(task);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList((from employee in await _employeeRepository.GetAllAsync()
+            task.Employees = new SelectList((from employee in await _employeeRepository.GetAllAsync()
                                                      select new { Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName })
                                                      , "Id", "FullName", task.EmployeeId);
             return View(task);
@@ -88,10 +89,12 @@ namespace ManagementApplication.Controllers
             {
                 return NotFound();
             }
-            ViewData["EmployeeId"] = new SelectList((from employee in await _employeeRepository.GetAllAsync()
+            var taskViewModel = new TaskViewModel();
+            taskViewModel.Id = task.Id;
+            taskViewModel.Employees = new SelectList((from employee in await _employeeRepository.GetAllAsync()
                                                      select new { Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName })
                                                      , "Id", "FullName", task.EmployeeId);
-            return View(task);
+            return View(taskViewModel);
         }
 
         // POST: Tasks/Edit/5
@@ -99,7 +102,7 @@ namespace ManagementApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CreationTime,TaskName,TaskDescription,EmployeeId,Deadline")] DAL.DBO.Task task)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CreationTime,TaskName,TaskDescription,EmployeeId,Deadline")] TaskViewModel task)
         {
             if (id != task.Id)
             {
@@ -125,8 +128,8 @@ namespace ManagementApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList((from employee in await _employeeRepository.GetAllAsync()
-                                                     select new { Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName })
+            task.Employees = new SelectList(from employee in await _employeeRepository.GetAllAsync()
+                                                     select new { Id = employee.Id, FullName = employee.LastName + " " + employee.FirstName }
                                                      , "Id", "FullName", task.EmployeeId);
             return View(task);
         }

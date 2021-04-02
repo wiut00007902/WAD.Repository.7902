@@ -50,8 +50,9 @@ namespace ManagementApplication.Controllers
         // GET: Employees/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["DepartmentId"] = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName");
-            return View();
+            var employeeViewModel = new EmployeeViewModel();
+            employeeViewModel.Departments = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName");
+            return View(employeeViewModel);
         }
 
         // POST: Employees/Create
@@ -59,7 +60,7 @@ namespace ManagementApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,DateOfBirth,Gender,PassportNo,Address,Phone,Email,DepartmentId,Position,Salary,Schedule,EmploymentDate")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,DateOfBirth,Gender,PassportNo,Address,Phone,Email,DepartmentId,Position,Salary,Schedule,EmploymentDate")] EmployeeViewModel employee)
         {
             employee.EmploymentDate = DateTime.Now;
             if (ModelState.IsValid)
@@ -67,7 +68,7 @@ namespace ManagementApplication.Controllers
                 await _employeeRepository.CreateAsync(employee);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentId"] = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName", employee.DepartmentId);
+            employee.Departments = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName", employee.DepartmentId);
             return View(employee);
         }
 
@@ -84,8 +85,10 @@ namespace ManagementApplication.Controllers
             {
                 return NotFound();
             }
-            ViewData["DepartmentId"] = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName", employee.DepartmentId);
-            return View(employee);
+            var employeeViewModel = new EmployeeViewModel();
+            employeeViewModel.Id = employee.Id;
+            employeeViewModel.Departments = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName", employee.DepartmentId);
+            return View(employeeViewModel);
         }
 
         // POST: Employees/Edit/5
@@ -93,7 +96,7 @@ namespace ManagementApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,DateOfBirth,Gender,PassportNo,Address,Phone,Email,DepartmentId,Position,Salary,Schedule,EmploymentDate")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,DateOfBirth,Gender,PassportNo,Address,Phone,Email,DepartmentId,Position,Salary,Schedule,EmploymentDate")] EmployeeViewModel employee)
         {
             if (id != employee.Id)
             {
@@ -119,7 +122,7 @@ namespace ManagementApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentId"] = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName", employee.DepartmentId);
+            employee.Departments = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName", employee.DepartmentId);
             return View(employee);
         }
 
