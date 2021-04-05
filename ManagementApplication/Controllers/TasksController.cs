@@ -25,7 +25,7 @@ namespace ManagementApplication.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DAL.DBO.Task>>> GetTasks()
         {
-            return await _context.Tasks.ToListAsync();
+            return await _context.Tasks.Include("Employee").ToListAsync();
         }
 
         // GET: api/Tasks/5

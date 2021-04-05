@@ -5708,11 +5708,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Alo\\Documents\\WAD.Repository.7902-main\\ManagementApplication.DAL\\ManagementApplication.DAL.csproj",
+      "projectUniqueName": "C:\\Users\\Alo\\Documents\\GitHub\\WAD.Repository.7902\\ManagementApplication.DAL\\ManagementApplication.DAL.csproj",
       "projectName": "ManagementApplication.DAL",
-      "projectPath": "C:\\Users\\Alo\\Documents\\WAD.Repository.7902-main\\ManagementApplication.DAL\\ManagementApplication.DAL.csproj",
+      "projectPath": "C:\\Users\\Alo\\Documents\\GitHub\\WAD.Repository.7902\\ManagementApplication.DAL\\ManagementApplication.DAL.csproj",
       "packagesPath": "C:\\Users\\Alo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Alo\\Documents\\WAD.Repository.7902-main\\ManagementApplication.DAL\\obj\\",
+      "outputPath": "C:\\Users\\Alo\\Documents\\GitHub\\WAD.Repository.7902\\ManagementApplication.DAL\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Alo\\AppData\\Roaming\\NuGet\\NuGet.Config",
