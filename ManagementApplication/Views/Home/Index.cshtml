@@ -39,6 +39,26 @@
                         templateUrl: 'pages/tasks/index.html',
                         controller: 'TasksController'
                     })
+                .when('/createRegion',
+                    {
+                        templateUrl: 'pages/regions/create.html',
+                        controller: 'CreateReionController'
+                    })
+                .when('/createDepartment',
+                    {
+                        templateUrl: 'pages/departments/create.html',
+                        controller: 'CreateDepartmentController'
+                    })
+                .when('/createEmployee',
+                    {
+                        templateUrl: 'pages/employees/create.html',
+                        controller: 'CreateEmployeeController'
+                    })
+                .when('/createTask',
+                    {
+                        templateUrl: 'pages/tasks/create.html',
+                        controller: 'CreateTaskController'
+                    })
                 .otherwise({
                     redirectTo: '/'
                 });
@@ -74,4 +94,43 @@
                     $scope.tasks = response.data;
                 })
         }])
+        .controller('CreateReionController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+            $scope.region =
+            {
+                id: 0,
+                regionName: '',
+            };
+
+            $scope.addRegion = function () {
+                $http.post('@Url.Action("PostRegion", "Regions")', $scope.region)
+                    .then(function (response) {
+                        $location.path('/regions');
+                    });
+            };
+        }])
+        .controller('CreateDepartmentController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+            $scope.department =
+            {
+                departmentName: '',
+                regionId: 0,
+            };
+            $scope.departmentRegion =
+            {
+                region: {}
+            };
+
+            $scope.regions = [];
+            $http.get('@Url.Action("GetRegions", "Regions")')
+                .then(function (response) {
+                    $scope.regions = response.data;
+                })
+
+            $scope.addDepartment = function () {
+                $scope.department.regionId = $scope.departmentRegion.region.id;
+                $http.post('@Url.Action("PostDepartment", "Departments")', $scope.department)
+                    .then(function (response) {
+                        $location.path('/departments');
+                    });
+            };
+        }]);
 </script>

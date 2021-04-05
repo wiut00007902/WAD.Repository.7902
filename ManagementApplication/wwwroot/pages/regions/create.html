@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1>Create</h1>
+
+    <h4>Region</h4>
+    <hr />
+    <div class="row">
+
+        <div class="col-md-4">
+
+            <!-- Input for the region name -->
+
+            <div class="form-group">
+                <label class="control-label">Region name</label>
+                <input ng-model="region.regionName" placeholder="Region name" class="form-control" />
+            </div>
+
+            <!-- Region creation button -->
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" ng-click="addRegion()"/>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div>
+        <a href="#!/regions">Back to List</a>
+    </div>
+</body>
+</html>

@@ -78,6 +78,7 @@ namespace ManagementApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<Department>> PostDepartment(Department department)
         {
+            department.CreationDate = DateTime.Now;
             _context.Departments.Add(department);
             await _context.SaveChangesAsync();
 

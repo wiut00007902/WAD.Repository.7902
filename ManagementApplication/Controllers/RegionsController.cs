@@ -78,6 +78,7 @@ namespace ManagementApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<Region>> PostRegion(Region region)
         {
+            region.CreationDate = DateTime.Now;
             _context.Regions.Add(region);
             await _context.SaveChangesAsync();
 

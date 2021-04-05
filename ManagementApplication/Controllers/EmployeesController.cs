@@ -94,6 +94,17 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
+            List<DAL.DBO.Task> tasks = new List<DAL.DBO.Task>();
+            tasks = await _context.Tasks.ToListAsync();
+
+            foreach(var task in tasks)
+            {
+                if(task.Employee.Id == employee.Id)
+                {
+                    _context.Tasks.Remove(task);
+                }
+            }
+
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
 
