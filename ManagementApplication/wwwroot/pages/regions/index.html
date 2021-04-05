@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+    <h1>Regions</h1>
+
+    <p>
+        <a href="">Create New</a>
+    </p>
+
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th>
+                    Region name
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="region in regions">
+                <td>
+                    {{region.regionName}}
+                </td>
+                <td>
+                    <a href="">Edit</a> |
+                    <a href="">Details</a> |
+                    <a href="">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</body>
+</html>

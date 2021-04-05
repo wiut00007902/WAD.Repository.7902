@@ -7175,11 +7175,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Alo\\Documents\\GitHub\\WAD.Repository.7902\\ManagementApplication\\ManagementApplication.csproj",
+      "projectUniqueName": "C:\\Users\\Alo\\Documents\\WAD.Repository.7902-main\\ManagementApplication\\ManagementApplication.csproj",
       "projectName": "ManagementApplication",
-      "projectPath": "C:\\Users\\Alo\\Documents\\GitHub\\WAD.Repository.7902\\ManagementApplication\\ManagementApplication.csproj",
+      "projectPath": "C:\\Users\\Alo\\Documents\\WAD.Repository.7902-main\\ManagementApplication\\ManagementApplication.csproj",
       "packagesPath": "C:\\Users\\Alo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Alo\\Documents\\GitHub\\WAD.Repository.7902\\ManagementApplication\\obj\\",
+      "outputPath": "C:\\Users\\Alo\\Documents\\WAD.Repository.7902-main\\ManagementApplication\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Alo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -7196,8 +7196,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\Alo\\Documents\\GitHub\\WAD.Repository.7902\\ManagementApplication.DAL\\ManagementApplication.DAL.csproj": {
-              "projectPath": "C:\\Users\\Alo\\Documents\\GitHub\\WAD.Repository.7902\\ManagementApplication.DAL\\ManagementApplication.DAL.csproj"
+            "C:\\Users\\Alo\\Documents\\WAD.Repository.7902-main\\ManagementApplication.DAL\\ManagementApplication.DAL.csproj": {
+              "projectPath": "C:\\Users\\Alo\\Documents\\WAD.Repository.7902-main\\ManagementApplication.DAL\\ManagementApplication.DAL.csproj"
             }
           }
         }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FxXURLHl6xmwoz74+FK7qgLI10QVkh2xw9mW3Bh3qal79I3jf7PCQZVgyZixETVzxSJiqPFimrOna9Y/d/uGPQ==",
+  "dgSpecHash": "zX8CqQuCEeUtTh/cyJaKT0ojayBnIM23bmz/8LbR2FE4VZ6g6K2LA+65luBa7biE0YKUJfqSb0XEJcBVE5XdhA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Alo\\Documents\\GitHub\\WAD.Repository.7902\\ManagementApplication.DAL\\ManagementApplication.DAL.csproj",
+  "projectFilePath": "C:\\Users\\Alo\\Documents\\WAD.Repository.7902-main\\ManagementApplication.DAL\\ManagementApplication.DAL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Alo\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\Alo\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",

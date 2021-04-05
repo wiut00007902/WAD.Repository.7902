@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "//X5PzECBkmgmU4Y6SIlnIkW0URgoMdIMU50Qf3WhuqfS+FQNI3q14x+oHfy495lRZ9FbChnTWDNcZoDtaShtw==",
+  "dgSpecHash": "U2Z2p/ErKqBQvBi0kCjwuXWEENRxJOzinw6vVHrzmkoraAIMS8DdMqdh9T5l6s8eHS84Dg9IWgGS8ofOekYEMg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Alo\\Documents\\GitHub\\WAD.Repository.7902\\ManagementApplication\\ManagementApplication.csproj",
+  "projectFilePath": "C:\\Users\\Alo\\Documents\\WAD.Repository.7902-main\\ManagementApplication\\ManagementApplication.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Alo\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Alo\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
