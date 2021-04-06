@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1>Edit</h1>
+
+    <h4>Department</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+
+            <div class="form-group">
+                <label class="control-label">Department name</label>
+                <input class="form-control" ng-model="department.departmentName"/>
+            </div>
+            <div class="form-group">
+                <label  class="control-label"></label>
+                <select class="form-control" ng-options="region as region.regionName for region in regions"
+                        ng-model="departmentRegion.region">Region name</select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" ng-click="editDepartment()"/>
+            </div>
+
+        </div>
+    </div>
+
+    <div>
+        <a href="#!/regions">Back to List</a>
+    </div>
+</body>
+</html>

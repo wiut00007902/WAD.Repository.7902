@@ -68,6 +68,11 @@
                         templateUrl: 'pages/regions/edit.html',
                         controller: 'EditReionController'
                     })
+                .when('/editDepartment/:departmentId',
+                    {
+                        templateUrl: 'pages/departments/edit.html',
+                        controller: 'EditDepartmentController'
+                    })
                 .otherwise({
                     redirectTo: '/'
                 });
@@ -229,9 +234,42 @@
                 });
 
             $scope.editRegion = function () {
-                $http.put('@Url.Action("PutRegion", "Regions")/' + $routeParams.regionId, $scope.region)
+                $http.put('@Url.Action("GetRegions", "Regions")/' + $routeParams.regionId, $scope.region)
                     .then(function (response) {
                         $location.path('/regions');
+                    });
+            };
+        }])
+        .controller('EditDepartmentController', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
+            $scope.department =
+            {
+                departmentName: '',
+                regionId: 0,
+            };
+
+            $scope.departmentRegion =
+            {
+                region: {}
+            };
+
+            $scope.regions = [];
+            $http.get('@Url.Action("GetRegions", "Regions")')
+                .then(function (response) {
+                    $scope.regions = response.data;
+                })
+
+            $http.get('@Url.Action("GetDepartments", "Departments")/' + $routeParams.departmentId)
+                .then(function (response) {
+                    $scope.department = response.data;
+                });
+
+            $scope.editDepartment = function () {
+
+                $scope.department.regionId = $scope.departmentRegion.region.id;
+
+                $http.put('@Url.Action("GetDepartments", "Departments")/' + $routeParams.departmentId, $scope.department)
+                    .then(function (response) {
+                        $location.path('/departments');
                     });
             };
         }]);
