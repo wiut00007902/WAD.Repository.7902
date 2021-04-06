@@ -5,6 +5,13 @@
             .then(function (response) {
                 $scope.regions = response.data;
             })
+
+        $scope.deleteRegion = function (region) {
+            $http.delete('api/Regions/' + region.id).then(function (response) {
+                var index = $scope.regions.indexOf(region);
+                $scope.regions.splice(index, 1);
+            })
+        }
     }]);
 
 managementApplication
