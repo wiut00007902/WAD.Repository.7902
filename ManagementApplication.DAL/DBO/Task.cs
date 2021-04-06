@@ -8,19 +8,24 @@ namespace ManagementApplication.DAL.DBO
 {
     public class Task : IValidatableObject
     {
-        [Display(Name = "Task ID")]
         public int Id { get; set; }
-        [Display(Name = "Creation date")]
+
         public DateTime CreationTime { get; set; }
-        [Display(Name = "Task name")]
+
+        [Required]
         public string TaskName { get; set; }
-        [Required(ErrorMessage = "You have to describe the task"), MinLength(100, ErrorMessage = "Task description is too short. It should be at least 100 symbols."), Display(Name = "Task description")]
+
+        [Required, MinLength(10)]
        public string TaskDescription { get; set; }
-        [Display(Name = "Employee")]
+
+        [Required]
         public int? EmployeeId { get; set; }
+
         public virtual Employee Employee { get; set; }
-        [Required(ErrorMessage = "You have to set the task deadline"), Display(Name = "Deadline")]
+
+        [Required]
         public DateTime Deadline { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> validationResults = new List<ValidationResult>();

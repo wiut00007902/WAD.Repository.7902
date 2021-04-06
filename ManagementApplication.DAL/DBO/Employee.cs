@@ -8,34 +8,46 @@ namespace ManagementApplication.DAL.DBO
 {
     public class Employee
     {
-        [Display(Name = "Employee ID")]
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, insert the first name"), MinLength(2, ErrorMessage = "First name must be at least 2 symbols"), Display(Name = "First name")]
+
+        [Required, MinLength(2)]
         public string FirstName { get; set; }
-        [Required(ErrorMessage = "Please, insert the last name"), MinLength(2, ErrorMessage = "Last name must be at least 2 symbols"), Display(Name = "Last name")]
+
+        [Required, MinLength(2)]
         public string LastName { get; set; }
-        [Required(ErrorMessage = "Please, insert the date of birth"), Display(Name = "Date of birth")]
+
+        [Required]
         public DateTime DateOfBirth { get; set; }
-        [Required(ErrorMessage = "Please, insert the gender"), Display(Name = "Gender")]
+
+        [Required]
         public Gender Gender { get; set; }
-        [Required(ErrorMessage = "Please, insert the passport number"), Display(Name = "Passport number")]
+
+        [Required]
         public string PassportNo { get; set; }
-        [Required(ErrorMessage = "Please, insert the address"), Display(Name = "Address")]
+
+        [Required]
         public string Address { get; set; }
-        [Required(ErrorMessage = "Please, insert the phone number"), Phone, Display(Name = "Phone")]
+
+        [Required, Phone]
         public string Phone { get; set; }
-        [Required(ErrorMessage = "Please, insert the email"), EmailAddress, Display(Name = "E-mail")]
+
+        [Required, EmailAddress]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Please, insert the employee's department"), Display(Name = "Department")]
+
+        [Required]
         public int? DepartmentId { get; set; }
+
         public virtual Department Department { get; set; }
-        [Required(ErrorMessage = "Please, insert the employee's position"), Display(Name = "Position")]
+
+        [Required]
         public string Position { get; set; }
-        [Required(ErrorMessage = "Please, insert the employee's salary"), Display(Name = "Salary in UZS")]
+
+        [Required]
         public float Salary { get; set; }
-        [Required(ErrorMessage = "Please, select the schedule of the work"), Display(Name = "Schedule")]
+
+        [Required]
         public Schedule Schedule { get; set; }
-        [Display(Name = "Employment date")]
+
         public DateTime EmploymentDate { get; set; }
     }
     public enum Schedule
