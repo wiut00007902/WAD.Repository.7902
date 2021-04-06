@@ -78,6 +78,7 @@ namespace ManagementApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
+            employee.EmploymentDate = DateTime.Now;
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 

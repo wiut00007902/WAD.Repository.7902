@@ -16,91 +16,101 @@
             <!-- Input the for employee's first name -->
 
             <div class="form-group">
-                <label class="control-label">Frst name</label>
-                <input class="form-control" />
+                <label class="control-label" >Frst name</label>
+                <input class="form-control" ng-model="employee.firstName" />
             </div>
 
             <!-- Input the for employee's last name -->
 
             <div class="form-group">
                 <label class="control-label">Last name</label>
-                <input class="form-control" />
+                <input class="form-control" ng-model="employee.lastName" />
             </div>
 
-            <!-- Input the for employee's date of birth -->c
+            <!-- Input the for employee's date of birth -->
 
             <div class="form-group">
                 <label class="control-label">Date of birth</label>
-                <input class="form-control" type="date" />
+                <input class="form-control" type="date" ng-model="employee.dateOfBirth" />
             </div>
 
             <!-- Input the for employee's gender -->
 
             <div class="form-group">
                 <label class="control-label">Gender</label>
-                <select class="form-control"></select>
+                <select class="form-control" ng-model="employee.gender">
+                    <option value="0">Male</option>
+                    <option value="1">Female</option>
+                </select>
             </div>
 
             <!-- Input the for employee's passport number -->
 
             <div class="form-group">
                 <label class="control-label">Passport number</label>
-                <input class="form-control" />
+                <input class="form-control" ng-model="employee.passportNo" />
             </div>
 
             <!-- Input the for employee's address -->
 
             <div class="form-group">
                 <label class="control-label">Address</label>
-                <input class="form-control" />
+                <input class="form-control" ng-model="employee.address" />
             </div>
 
             <!-- Input the for employee's phone -->
 
             <div class="form-group">
                 <label class="control-label">Phone</label>
-                <input class="form-control" />
+                <input class="form-control" ng-model="employee.phone" />
             </div>
 
             <!-- Input the for employee's email -->
 
             <div class="form-group">
                 <label class="control-label">Email</label>
-                <input class="form-control" />
+                <input class="form-control" ng-model="employee.email" />
             </div>
 
             <!-- Selection of the employee's departmnet -->
 
             <div class="form-group">
                 <label class="control-label">Departmnet</label>
-                <select class="form-control"></select>
+                <select class="form-control"  ng-options="department as department.departmentName for department in departments"
+                        ng-model="employeeDepartments.department"></select>
             </div>
 
             <!-- Input for the employee's position -->
 
             <div class="form-group">
                 <label class="control-label">Position</label>
-                <input class="form-control" />
+                <input class="form-control" ng-model="employee.position" />
             </div>
 
             <!-- Input for the employee's salary -->
 
             <div class="form-group">
                 <label class="control-label">Salary</label>
-                <input class="form-control" />
+                <input class="form-control" ng-model="employee.salary" />
             </div>
 
             <!-- Selection of the employee's work scheule -->
 
             <div class="form-group">
                 <label class="control-label">Work schedule</label>
-                <select class="form-control"></select>
+                <select class="form-control" ng-model="employee.schedule">
+                    <option value="0">Fulltime</option>
+                    <option value="1">Parttime</option>
+                    <option value="2">Fixed</option>
+                    <option value="3">Flexible</option>
+                    <option value="4">Roating</option>
+                </select>
             </div>
 
             <!-- Employee creation button -->
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" ng-click="addEmployee()"/>
             </div>
         </div>
     </div>
