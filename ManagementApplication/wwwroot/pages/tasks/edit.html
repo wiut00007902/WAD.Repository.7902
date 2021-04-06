@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1>Edit</h1>
+
+    <h4>Task</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+
+            <!-- Input for the task name -->
+
+            <div class="form-group">
+                <label class="control-label">Task name</label>
+                <input class="form-control" ng-model="task.taskName" />
+            </div>
+
+            <!-- Input for the task description -->
+
+            <div class="form-group">
+                <label class="control-label">Task description</label>
+                <input class="form-control" ng-model="task.taskDescription" />
+            </div>
+
+            <!-- Selection of the employee of the task -->
+
+            <div class="form-group">
+                <label class="control-label">Employee</label>
+                <select class="form-control" ng-options="employee as employee.firstName + ' ' + employee.lastName for employee in employees"
+                        ng-model="taskEmployee.employee"></select>
+            </div>
+
+            <!-- Input for the task deadline -->
+
+            <div class="form-group">
+                <label class="control-label">Deadline</label>
+                <input class="form-control" type="datetime-local" ng-model="task.deadline" />
+            </div>
+
+            <!-- Task creation button -->
+
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" ng-click="editTask()" />
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <a href="#!/tasks">Back to List</a>
+    </div>
+</body>
+</html>

@@ -73,6 +73,16 @@
                         templateUrl: 'pages/departments/edit.html',
                         controller: 'EditDepartmentController'
                     })
+                .when('/editEmployee/:employeeId',
+                    {
+                        templateUrl: 'pages/employees/edit.html',
+                        controller: 'EditEmployeeController'
+                    })
+                .when('/editTask/:taskId',
+                    {
+                        templateUrl: 'pages/tasks/edit.html',
+                        controller: 'EditTaskController'
+                    })
                 .otherwise({
                     redirectTo: '/'
                 });
@@ -270,6 +280,87 @@
                 $http.put('@Url.Action("GetDepartments", "Departments")/' + $routeParams.departmentId, $scope.department)
                     .then(function (response) {
                         $location.path('/departments');
+                    });
+            };
+        }])
+        .controller('EditEmployeeController', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
+            $scope.employee =
+            {
+                firstName: '',
+                lastName: '',
+                dateOfBirth: '',
+                gender: 0,
+                passportNo: '',
+                address: '',
+                phone: '',
+                email: '',
+                departmentId: '',
+                position: '',
+                salary: 0,
+                schedule: 0
+            };
+
+            $scope.employeeDepartments =
+            {
+                department: {}
+            };
+
+            $scope.departments = [];
+            $http.get('@Url.Action("GetDepartments", "Departments")')
+                .then(function (response) {
+                    $scope.departments = response.data;
+                })
+
+            $http.get('@Url.Action("GetEmployees", "Employees")/' + $routeParams.employeeId)
+                .then(function (response) {
+                    $scope.employee = response.data;
+                });
+
+            $scope.editEmployee = function () {
+
+                $scope.employee.departmentId = $scope.employeeDepartments.department.id;
+
+                $scope.employee.gender = $scope.employee.gender - 0;
+                $scope.employee.schedule = $scope.employee.schedule - 0;
+
+                $http.put('@Url.Action("GetEmployees", "Employees")/' + $routeParams.employeeId, $scope.employee)
+                    .then(function (response) {
+                        $location.path('/employees');
+                    });
+            };
+        }])
+        .controller('EditTaskController', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
+            $scope.task =
+            {
+                taskName: '',
+                taskDescription: '',
+                employeeId: '',
+                deadline: ''
+            };
+
+            $scope.taskEmployee =
+            {
+                employee: {}
+            };
+
+            $scope.employees = [];
+            $http.get('@Url.Action("GetEmployees", "Employees")')
+                .then(function (response) {
+                    $scope.employees = response.data;
+                })
+
+            $http.get('@Url.Action("GetTasks", "Tasks")/' + $routeParams.taskId)
+                .then(function (response) {
+                    $scope.task = response.data;
+                });
+
+            $scope.editTask = function () {
+
+                $scope.task.employeeId = $scope.taskEmployee.employee.id;
+
+                $http.put('@Url.Action("GetTasks", "Tasks")/' + $routeParams.taskId, $scope.task)
+                    .then(function (response) {
+                        $location.path('/tasks');
                     });
             };
         }]);
