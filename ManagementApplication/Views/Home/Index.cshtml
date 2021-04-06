@@ -63,6 +63,11 @@
                         templateUrl: 'pages/tasks/create.html',
                         controller: 'CreateTaskController'
                     })
+                .when('/editRegion/:regionId',
+                    {
+                        templateUrl: 'pages/regions/edit.html',
+                        controller: 'EditReionController'
+                    })
                 .otherwise({
                     redirectTo: '/'
                 });
@@ -178,6 +183,55 @@
                 $http.post('@Url.Action("PostEmployee", "Employees")', $scope.employee)
                     .then(function (response) {
                         $location.path('/employees');
+                    });
+            };
+        }])
+        .controller('CreateTaskController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+            $scope.task =
+            {
+                taskName: '',
+                taskDescription: '',
+                employeeId: '',
+                deadline: ''
+            };
+
+            $scope.taskEmployee =
+            {
+                employee: {}
+            };
+
+            $scope.employees = [];
+            $http.get('@Url.Action("GetEmployees", "Employees")')
+                .then(function (response) {
+                    $scope.employees = response.data;
+                })
+
+            $scope.addTask = function () {
+
+                $scope.task.employeeId = $scope.taskEmployee.employee.id;
+
+                $http.post('@Url.Action("PostTask", "Tasks")', $scope.task)
+                    .then(function (response) {
+                        $location.path('/tasks');
+                    });
+            };
+        }])
+        .controller('EditReionController', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
+            $scope.region =
+            {
+                id: 0,
+                regionName: '',
+            };
+
+            $http.get('@Url.Action("GetRegions", "Regions")/' + $routeParams.regionId)
+                .then(function (response) {
+                    $scope.region = response.data;
+                });
+
+            $scope.editRegion = function () {
+                $http.put('@Url.Action("PutRegion", "Regions")/' + $routeParams.regionId, $scope.region)
+                    .then(function (response) {
+                        $location.path('/regions');
                     });
             };
         }]);
