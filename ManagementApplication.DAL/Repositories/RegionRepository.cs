@@ -23,6 +23,14 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task DeleteAsync(Region entity)
         {
+            foreach (var department in _context.Departments.ToList())
+            {
+                if (department.Region.Id == entity.Id)
+                {
+                    _context.Departments.Remove(department);
+                }
+            }
+
             _context.Regions.Remove(entity);
             await _context.SaveChangesAsync();
         }
