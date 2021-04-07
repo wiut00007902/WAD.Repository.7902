@@ -16,14 +16,14 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task CreateAsync(Region entity)
         {
-            _context.Add(entity);
+            entity.CreationDate = DateTime.Now;
+            _context.Regions.Add(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async System.Threading.Tasks.Task DeleteAsync(int id)
+        public async System.Threading.Tasks.Task DeleteAsync(Region entity)
         {
-            var region = await _context.Regions.FindAsync(id);
-            _context.Regions.Remove(region);
+            _context.Regions.Remove(entity);
             await _context.SaveChangesAsync();
         }
 
@@ -34,19 +34,17 @@ namespace ManagementApplication.DAL.Repositories
 
         public async Task<List<Region>> GetAllAsync()
         {
-            return await _context.Regions
-                .ToListAsync();
+            return await _context.Regions.ToListAsync();
         }
 
         public async Task<Region> GetByIdAsync(int id)
         {
-            return await _context.Regions
-                .FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Regions.FindAsync(id);
         }
 
         public async System.Threading.Tasks.Task UpdateAsync(Region entity)
         {
-            _context.Update(entity);
+            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
     }

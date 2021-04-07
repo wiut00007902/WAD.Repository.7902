@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ManagementApplication.DAL;
 using ManagementApplication.DAL.DBO;
+using ManagementApplication.DAL.Repositories;
 
 namespace ManagementApplication.Controllers
 {
@@ -14,25 +15,25 @@ namespace ManagementApplication.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly ManagementApplicationDbContext _context;
+        private readonly IRepository<Employee> _employeeRepository;
 
-        public EmployeesController(ManagementApplicationDbContext context)
+        public EmployeesController(IRepository<Employee> employeeRepository)
         {
-            _context = context;
+            _employeeRepository = employeeRepository;
         }
 
         // GET: api/Employees
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
-            return await _context.Employees.Include("Department").ToListAsync();
+            return await _employeeRepository.GetAllAsync();
         }
 
         // GET: api/Employees/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = await _employeeRepository.GetByIdAsync(id);
 
             if (employee == null)
             {
@@ -52,15 +53,13 @@ namespace ManagementApplication.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(employee).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _employeeRepository.UpdateAsync(employee);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EmployeeExists(id))
+                if (!_employeeRepository.Exists(id))
                 {
                     return NotFound();
                 }
@@ -78,9 +77,7 @@ namespace ManagementApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
-            employee.EmploymentDate = DateTime.Now;
-            _context.Employees.Add(employee);
-            await _context.SaveChangesAsync();
+            await _employeeRepository.CreateAsync(employee);
 
             return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
         }
@@ -89,21 +86,15 @@ namespace ManagementApplication.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = await _employeeRepository.GetByIdAsync(id);
             if (employee == null)
             {
                 return NotFound();
             }
 
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
+            await _employeeRepository.DeleteAsync(employee);
 
             return NoContent();
-        }
-
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employees.Any(e => e.Id == id);
         }
     }
 }

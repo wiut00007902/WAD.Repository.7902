@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ManagementApplication.DAL;
 using ManagementApplication.DAL.DBO;
+using ManagementApplication.DAL.Repositories;
 
 namespace ManagementApplication.Controllers
 {
@@ -14,25 +15,25 @@ namespace ManagementApplication.Controllers
     [ApiController]
     public class RegionsController : ControllerBase
     {
-        private readonly ManagementApplicationDbContext _context;
+        private readonly IRepository<Region> _regionRepository;
 
-        public RegionsController(ManagementApplicationDbContext context)
+        public RegionsController(IRepository<Region> regionRepository)
         {
-            _context = context;
+            _regionRepository = regionRepository;
         }
 
         // GET: api/Regions
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Region>>> GetRegions()
         {
-            return await _context.Regions.ToListAsync();
+            return await _regionRepository.GetAllAsync();
         }
 
         // GET: api/Regions/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Region>> GetRegion(int id)
         {
-            var region = await _context.Regions.FindAsync(id);
+            var region = await _regionRepository.GetByIdAsync(id);
 
             if (region == null)
             {
@@ -52,15 +53,13 @@ namespace ManagementApplication.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(region).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _regionRepository.UpdateAsync(region);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RegionExists(id))
+                if (!_regionRepository.Exists(id))
                 {
                     return NotFound();
                 }
@@ -78,9 +77,7 @@ namespace ManagementApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<Region>> PostRegion(Region region)
         {
-            region.CreationDate = DateTime.Now;
-            _context.Regions.Add(region);
-            await _context.SaveChangesAsync();
+            await _regionRepository.CreateAsync(region);
 
             return CreatedAtAction("GetRegion", new { id = region.Id }, region);
         }
@@ -89,21 +86,15 @@ namespace ManagementApplication.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRegion(int id)
         {
-            var region = await _context.Regions.FindAsync(id);
+            var region = await _regionRepository.GetByIdAsync(id);
             if (region == null)
             {
                 return NotFound();
             }
 
-            _context.Regions.Remove(region);
-            await _context.SaveChangesAsync();
+            await _regionRepository.DeleteAsync(region);
 
             return NoContent();
-        }
-
-        private bool RegionExists(int id)
-        {
-            return _context.Regions.Any(e => e.Id == id);
         }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ManagementApplication.DAL;
 using ManagementApplication.DAL.DBO;
+using ManagementApplication.DAL.Repositories;
 
 namespace ManagementApplication.Controllers
 {
@@ -14,25 +15,25 @@ namespace ManagementApplication.Controllers
     [ApiController]
     public class TasksController : ControllerBase
     {
-        private readonly ManagementApplicationDbContext _context;
+        private readonly IRepository<DAL.DBO.Task> _taskRepository;
 
-        public TasksController(ManagementApplicationDbContext context)
+        public TasksController(IRepository<DAL.DBO.Task> taskRepository)
         {
-            _context = context;
+            _taskRepository = taskRepository;
         }
 
         // GET: api/Tasks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DAL.DBO.Task>>> GetTasks()
         {
-            return await _context.Tasks.Include("Employee").ToListAsync();
+            return await _taskRepository.GetAllAsync();
         }
 
         // GET: api/Tasks/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DAL.DBO.Task>> GetTask(int id)
         {
-            var task = await _context.Tasks.FindAsync(id);
+            var task = await _taskRepository.GetByIdAsync(id);
 
             if (task == null)
             {
@@ -52,15 +53,13 @@ namespace ManagementApplication.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(task).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _taskRepository.UpdateAsync(task);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TaskExists(id))
+                if (!_taskRepository.Exists(id))
                 {
                     return NotFound();
                 }
@@ -78,8 +77,7 @@ namespace ManagementApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<DAL.DBO.Task>> PostTask(DAL.DBO.Task task)
         {
-            _context.Tasks.Add(task);
-            await _context.SaveChangesAsync();
+            await _taskRepository.CreateAsync(task);
 
             return CreatedAtAction("GetTask", new { id = task.Id }, task);
         }
@@ -88,21 +86,15 @@ namespace ManagementApplication.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTask(int id)
         {
-            var task = await _context.Tasks.FindAsync(id);
+            var task = await _taskRepository.GetByIdAsync(id);
             if (task == null)
             {
                 return NotFound();
             }
 
-            _context.Tasks.Remove(task);
-            await _context.SaveChangesAsync();
+            _taskRepository.DeleteAsync(task);
 
             return NoContent();
-        }
-
-        private bool TaskExists(int id)
-        {
-            return _context.Tasks.Any(e => e.Id == id);
         }
     }
 }

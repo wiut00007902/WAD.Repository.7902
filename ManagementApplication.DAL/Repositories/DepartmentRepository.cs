@@ -13,17 +13,16 @@ namespace ManagementApplication.DAL.Repositories
         public DepartmentRepository(ManagementApplicationDbContext context) : base(context)
         {
         }
-
         public async System.Threading.Tasks.Task CreateAsync(Department entity)
         {
-            _context.Add(entity);
+            entity.CreationDate = DateTime.Now;
+            _context.Departments.Add(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async System.Threading.Tasks.Task DeleteAsync(int id)
+        public async System.Threading.Tasks.Task DeleteAsync(Department entity)
         {
-            var department = await _context.Departments.FindAsync(id);
-            _context.Departments.Remove(department);
+            _context.Departments.Remove(entity);
             await _context.SaveChangesAsync();
         }
 
@@ -34,19 +33,17 @@ namespace ManagementApplication.DAL.Repositories
 
         public async Task<List<Department>> GetAllAsync()
         {
-            return await _context.Departments.Include(d => d.Region).ToListAsync();
+            return await _context.Departments.Include("Region").ToListAsync();
         }
 
         public async Task<Department> GetByIdAsync(int id)
         {
-            return await _context.Departments
-                .Include(d => d.Region)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Departments.FindAsync(id);
         }
 
         public async System.Threading.Tasks.Task UpdateAsync(Department entity)
         {
-            _context.Update(entity);
+            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
     }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ManagementApplication.DAL;
 using ManagementApplication.DAL.DBO;
+using ManagementApplication.DAL.Repositories;
 
 namespace ManagementApplication.Controllers
 {
@@ -14,25 +15,25 @@ namespace ManagementApplication.Controllers
     [ApiController]
     public class DepartmentsController : ControllerBase
     {
-        private readonly ManagementApplicationDbContext _context;
+        private readonly IRepository<Department> _departmentRepository;
 
-        public DepartmentsController(ManagementApplicationDbContext context)
+        public DepartmentsController(IRepository<Department> departmentRepository)
         {
-            _context = context;
+            _departmentRepository = departmentRepository;
         }
 
         // GET: api/Departments
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
-            return await _context.Departments.Include("Region").ToListAsync();
+            return await _departmentRepository.GetAllAsync();
         }
 
         // GET: api/Departments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Department>> GetDepartment(int id)
         {
-            var department = await _context.Departments.FindAsync(id);
+            var department = await _departmentRepository.GetByIdAsync(id);
 
             if (department == null)
             {
@@ -52,15 +53,13 @@ namespace ManagementApplication.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(department).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _departmentRepository.UpdateAsync(department);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!DepartmentExists(id))
+                if (!_departmentRepository.Exists(id))
                 {
                     return NotFound();
                 }
@@ -78,9 +77,7 @@ namespace ManagementApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<Department>> PostDepartment(Department department)
         {
-            department.CreationDate = DateTime.Now;
-            _context.Departments.Add(department);
-            await _context.SaveChangesAsync();
+            await _departmentRepository.CreateAsync(department);
 
             return CreatedAtAction("GetDepartment", new { id = department.Id }, department);
         }
@@ -89,21 +86,15 @@ namespace ManagementApplication.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDepartment(int id)
         {
-            var department = await _context.Departments.FindAsync(id);
+            var department = await _departmentRepository.GetByIdAsync(id);
             if (department == null)
             {
                 return NotFound();
             }
 
-            _context.Departments.Remove(department);
-            await _context.SaveChangesAsync();
+            await _departmentRepository.DeleteAsync(department);
 
             return NoContent();
-        }
-
-        private bool DepartmentExists(int id)
-        {
-            return _context.Departments.Any(e => e.Id == id);
         }
     }
 }
