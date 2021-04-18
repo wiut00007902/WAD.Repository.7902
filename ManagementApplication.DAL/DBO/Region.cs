@@ -9,8 +9,6 @@ namespace ManagementApplication.DAL.DBO
     public class Region
     {
         public int Id { get; set; }
-
-        [Required, MinLength(2)]
         public string RegionName { get; set; }
 
         public DateTime CreationDate { get; set; }

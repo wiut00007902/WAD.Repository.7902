@@ -11,16 +11,17 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form>
+            <form name="regionEditForm" novalidate>
                 <div class="text-danger"></div>
                 <input type="hidden" ng-model="region.id" />
                 <div class="form-group">
                     <label class="control-label">Region name</label>
-                    <input class="form-control" ng-model="region.regionName" />
-                    <span class="text-danger"></span>
+                    <input class="form-control" name="regionNameInput" ng-model="region.regionName" required />
+                    <span class="text-danger" ng-show="regionEditForm.regionNameInput.$error.required">Enter the region name</span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" ng-click="editRegion()" />
+                    <input type="submit" value="Save" class="btn btn-primary" ng-click="editRegion()" 
+                           ng-disabled="regionEditForm.regionNameInput.$invalid" />
                 </div>
             </form>
         </div>

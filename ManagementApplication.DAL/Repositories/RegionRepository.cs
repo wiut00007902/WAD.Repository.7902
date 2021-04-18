@@ -27,6 +27,20 @@ namespace ManagementApplication.DAL.Repositories
             {
                 if (department.Region != null && department.Region.Id == entity.Id)
                 {
+                    foreach (var employee in _context.Employees.ToList())
+                    {
+                        if (employee.Department != null && employee.Department.Id == department.Id)
+                        {
+                            foreach (var task in _context.Tasks.ToList())
+                            {
+                                if (task.Employee != null && task.EmployeeId == employee.Id)
+                                {
+                                    _context.Tasks.Remove(task);
+                                }
+                            }
+                            _context.Employees.Remove(employee);
+                        }
+                    }
                     _context.Departments.Remove(department);
                 }
             }

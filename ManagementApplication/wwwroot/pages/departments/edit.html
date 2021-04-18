@@ -11,22 +11,23 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form>
+            <form name="departmentEditForm">
                 <div class="text-danger"></div>
                 <input type="hidden" />
                 <div class="form-group">
                     <label class="control-label">Department name</label>
-                    <input class="form-control" ng-model="department.departmentName" />
-                    <span class="text-danger"></span>
+                    <input class="form-control" ng-model="department.departmentName" name="departmentNameInput" required />
+                    <span class="text-danger" ng-show="departmentEditForm.departmentNameInput.$error.required">Enter the department name</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Region</label>
                     <select class="form-control" ng-options="region as region.regionName for region in regions"
                         ng-model="departmentRegion.region">Region name</select>
-                    <span class="text-danger"></span>
+                    <span class="text-danger">Select the department's region</span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" ng-click="editDepartment()" />
+                    <input type="submit" value="Save" class="btn btn-primary" ng-click="editDepartment()"
+                           ng-disabled="departmentEditForm.$invalid"/>
                 </div>
             </form>
         </div>

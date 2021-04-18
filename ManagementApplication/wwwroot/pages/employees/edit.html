@@ -11,81 +11,82 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form >
+            <form name="employeeEditForm">
                 <div class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
                 <div class="form-group">
                     <label class="control-label">Frst name</label>
-                    <input class="form-control" ng-model="employee.firstName" />
-                    <span class="text-danger"></span>
+                    <input class="form-control" ng-model="employee.firstName" name="employeeFirstNameInput" required/>
+                    <span class="text-danger" ng-show="employeeEditForm.employeeFirstNameInput.$error.required">Enter the first naem</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Last name</label>
-                    <input class="form-control" ng-model="employee.lastName" />
-                    <span class="text-danger"></span>
+                    <input class="form-control" ng-model="employee.lastName" name="employeeLastNameInput" required />
+                    <span class="text-danger" ng-show="employeeEditForm.employeeLastNameInput.$error.required">Enter the last name</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Date of birth</label>
-                    <input class="form-control" type="date" ng-model="employee.dateOfBirth" />
-                    <span class="text-danger"></span>
+                    <input class="form-control" type="date" ng-model="employee.dateOfBirth" name="employeeDateOfBirthInput" required />
+                    <span class="text-danger" ng-show="employeeEditForm.employeeDateOfBirthInput.$error.required">Enter the date of birth</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Gender</label>
-                    <select class="form-control" ng-model="employee.gender">
+                    <select class="form-control" ng-model="employee.gender" name="employeeGenderSelect" required>
                         <option value="0">Male</option>
                         <option value="1">Female</option>
                     </select>
-                    <span asp-validation-for="Gender" class="text-danger"></span>
+                    <span class="text-danger" ng-show="employeeEditForm.employeeGenderSelect.$error.required">Select the gender</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Passport number</label>
-                    <input class="form-control" ng-model="employee.passportNo" />
-                    <span class="text-danger"></span>
+                    <input class="form-control" ng-model="employee.passportNo" name="employeePassportNoInput" required/>
+                    <span class="text-danger" ng-show="employeeEditForm.employeePassportNoInput.$error.required">Enter the passport number</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Address</label>
-                    <input class="form-control" ng-model="employee.address" />
-                    <span class="text-danger"></span>
+                    <input class="form-control" ng-model="employee.address" name="employeeAddressInput" required/>
+                    <span class="text-danger" ng-show="employeeEditForm.employeeAddressInput.$error.required">Enter the address</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Phone</label>
-                    <input class="form-control" ng-model="employee.phone" />
-                    <span class="text-danger"></span>
+                    <input class="form-control" ng-model="employee.phone" type="tel" name="employeePhoneInput" required/>
+                    <span class="text-danger" ng-show="employeeEditForm.employeePhoneInput.$error.required">Enter the phone number</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Email</label>
-                    <input class="form-control" ng-model="employee.email" />
-                    <span class="text-danger"></span>
+                    <input class="form-control" ng-model="employee.email" name="employeeEmailInput" required />
+                    <span class="text-danger" ng-show="employeeEditForm.employeeEmailInput.$error.required">Enter the email</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Departmnet</label>
                     <select class="form-control" ng-options="department as department.departmentName for department in departments"
                             ng-model="employeeDepartments.department"></select>
-                    <span class="text-danger"></span>
+                    <span class="text-danger">Select the employee's department</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Position</label>
-                    <input class="form-control" ng-model="employee.position" />
-                    <span class="text-danger"></span>
+                    <input class="form-control" ng-model="employee.position" name="employeePositionInput" required />
+                    <span class="text-danger" ng-show="employeeEditForm.employeePositionInput.$error.required">Enter the position</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Salary</label>
-                    <input class="form-control" ng-model="employee.salary" />
-                    <span class="text-danger"></span>
+                    <input class="form-control" ng-model="employee.salary" type="number" name="employeeSalaryInput" required />
+                    <span class="text-danger" ng-show="employeeEditForm.employeeSalaryInput.$error.required">Enter the telephone number</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Work schedule</label>
-                    <select class="form-control" ng-model="employee.schedule">
+                    <select class="form-control" ng-model="employee.schedule" name="employeeScheduleInput" required>
                         <option value="0">Fulltime</option>
                         <option value="1">Parttime</option>
                         <option value="2">Fixed</option>
                         <option value="3">Flexible</option>
                         <option value="4">Roating</option>
                     </select>
-                    <span class="text-danger"></span>
+                    <span class="text-danger" ng-show="employeeEditForm.employeeScheduleInput.$error.required">Select the schedule</span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Edit" class="btn btn-primary" ng-click="editEmployee()" />
+                    <input type="submit" value="Edit" class="btn btn-primary" ng-click="editEmployee()"
+                           ng-disabled="employeeEditForm.$invalid"/>
                 </div>
             </form>
         </div>

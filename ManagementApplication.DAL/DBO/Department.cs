@@ -11,11 +11,7 @@ namespace ManagementApplication.DAL.DBO
         public int Id { get; set; }
 
         public DateTime CreationDate { get; set; }
-
-        [Required, MinLength(5)]
         public string DepartmentName { get; set; }
-
-        [Required]
         public int? RegionId { get; set; }
 
         public virtual Region Region { get; set; }

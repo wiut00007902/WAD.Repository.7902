@@ -11,15 +11,16 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form>
+            <form name="regionCreateForm">
                 <div class="text-danger"></div>
                 <div class="form-group">
                     <label class="control-label">Region name</label>
-                    <input class="form-control" ng-model="region.regionName" placeholder="Region name" />
-                    <span class="text-danger"></span>
+                    <input class="form-control" name="regionNameInput" ng-model="region.regionName" placeholder="Region name" required />
+                    <span class="text-danger" ng-show="regionCreateForm.regionNameInput.$error.required">Enter the region name</span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" ng-click="addRegion()"/>
+                    <input type="submit" value="Create" class="btn btn-primary" ng-click="addRegion()"
+                           ng-disabled="regionCreateForm.regionNameInput.$invalid" />
                 </div>
             </form>
         </div>
