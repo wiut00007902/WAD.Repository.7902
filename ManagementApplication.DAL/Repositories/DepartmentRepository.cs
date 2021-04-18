@@ -13,17 +13,31 @@ namespace ManagementApplication.DAL.Repositories
         public DepartmentRepository(ManagementApplicationDbContext context) : base(context)
         {
         }
-
         public async System.Threading.Tasks.Task CreateAsync(Department entity)
         {
-            _context.Add(entity);
+            entity.CreationDate = DateTime.Now;
+            _context.Departments.Add(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async System.Threading.Tasks.Task DeleteAsync(int id)
+        public async System.Threading.Tasks.Task DeleteAsync(Department entity)
         {
-            var department = await _context.Departments.FindAsync(id);
-            _context.Departments.Remove(department);
+            foreach (var employee in _context.Employees.ToList())
+            {
+                if (employee.Department != null && employee.Department.Id == entity.Id)
+                {
+                    foreach(var task in _context.Tasks.ToList())
+                    {
+                        if(task.Employee != null && task.EmployeeId == employee.Id)
+                        {
+                            _context.Tasks.Remove(task);
+                        }
+                    }
+                    _context.Employees.Remove(employee);
+                }
+            }
+
+            _context.Departments.Remove(entity);
             await _context.SaveChangesAsync();
         }
 
@@ -34,19 +48,17 @@ namespace ManagementApplication.DAL.Repositories
 
         public async Task<List<Department>> GetAllAsync()
         {
-            return await _context.Departments.Include(d => d.Region).ToListAsync();
+            return await _context.Departments.Include("Region").ToListAsync();
         }
 
         public async Task<Department> GetByIdAsync(int id)
         {
-            return await _context.Departments
-                .Include(d => d.Region)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Departments.Include("Region").SingleOrDefaultAsync(i => i.Id == id);
         }
 
         public async System.Threading.Tasks.Task UpdateAsync(Department entity)
         {
-            _context.Update(entity);
+            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
     }

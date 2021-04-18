@@ -1,5 +1,4 @@
-﻿using ManagementApplication.DAL.DBO;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +15,14 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task CreateAsync(DBO.Task entity)
         {
-            _context.Add(entity);
+            entity.CreationTime = DateTime.Now;
+            _context.Tasks.Add(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async System.Threading.Tasks.Task DeleteAsync(int id)
+        public async System.Threading.Tasks.Task DeleteAsync(DBO.Task entity)
         {
-            var task = await _context.Tasks.FindAsync(id);
-            _context.Tasks.Remove(task);
+            _context.Tasks.Remove(entity);
             await _context.SaveChangesAsync();
         }
 
@@ -34,20 +33,17 @@ namespace ManagementApplication.DAL.Repositories
 
         public async Task<List<DBO.Task>> GetAllAsync()
         {
-            return await _context.Tasks.Include(t => t.Employee)
-                .ToListAsync();
+            return await _context.Tasks.Include("Employee").ToListAsync();
         }
 
         public async Task<DBO.Task> GetByIdAsync(int id)
         {
-            return await _context.Tasks
-                .Include(t => t.Employee)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Tasks.Include("Employee").SingleOrDefaultAsync(i => i.Id == id);
         }
 
         public async System.Threading.Tasks.Task UpdateAsync(DBO.Task entity)
         {
-            _context.Update(entity);
+            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
     }

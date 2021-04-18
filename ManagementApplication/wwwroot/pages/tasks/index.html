@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1>Tasks</h1>
+
+    <p>
+        <a href="#!/createTask">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Task name
+                </th>
+                <th>
+                    Employee
+                </th>
+                <th>
+                    Deadline
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="task in tasks">
+                <td>
+                    {{task.taskName}}
+                </td>
+
+                <td>
+                    <a href="#!/employeeDetails/{{task.employee.id}}">{{task.employee.firstName}} {{task.employee.lastName}}</a>
+                </td>
+
+                <td>
+                    {{task.deadline}}
+                </td>
+
+                <td>
+                    <a href="#!/editTask/{{task.id}}">Edit</a> |
+                    <a href="#!/taskDetails/{{task.id}}">Details</a> |
+                    <a href="#!/deleteTask/{{task.id}}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

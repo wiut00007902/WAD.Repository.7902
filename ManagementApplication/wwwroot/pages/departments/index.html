@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1>Departments</h1>
+
+    <p>
+        <a href="#!/createDepartment">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Department name
+                </th>
+                <th>
+                    Reigon name
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr ng-repeat="department in departments">
+                <td>
+                    {{department.departmentName}}
+                </td>
+                <td>
+                    <a href="#!/regionDetails/{{department.region.id}}">{{department.region.regionName}}</a>
+                </td>
+                <td>
+                    <a href="#!/editDepartment/{{department.id}}">Edit</a> |
+                    <a href="#!/departmentDetails/{{department.id}}">Details</a> |
+                    <a href="#!/deleteDepartment/{{department.id}}">Delete</a>
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
+</body>
+</html>

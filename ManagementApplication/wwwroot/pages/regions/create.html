@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1>Create</h1>
+
+    <h4>Region</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form name="regionCreateForm">
+                <div class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">Region name</label>
+                    <input class="form-control" name="regionNameInput" ng-model="region.regionName" placeholder="Region name" required />
+                    <span class="text-danger" ng-show="regionCreateForm.regionNameInput.$error.required">Enter the region name</span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" ng-click="addRegion()"
+                           ng-disabled="regionCreateForm.regionNameInput.$invalid" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a href="#!/regions">Back to List</a>
+    </div>
+</body>
+</html>

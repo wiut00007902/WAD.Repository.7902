@@ -2,154 +2,99 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ManagementApplication.DAL;
-using ManagementApplication.Models;
-using ManagementApplication.DAL.Repositories;
 using ManagementApplication.DAL.DBO;
+using ManagementApplication.DAL.Repositories;
 
 namespace ManagementApplication.Controllers
 {
-    public class DepartmentsController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class DepartmentsController : ControllerBase
     {
         private readonly IRepository<Department> _departmentRepository;
-        private readonly IRepository<Region> _regionRepository;
 
-        public DepartmentsController(IRepository<Department> departmentRepository,
-            IRepository<Region> regionRepository)
+        public DepartmentsController(IRepository<Department> departmentRepository)
         {
             _departmentRepository = departmentRepository;
-            _regionRepository = regionRepository;
         }
 
-        // GET: Departments
-        public async Task<IActionResult> Index()
+        // GET: api/Departments
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
-            return View(await _departmentRepository.GetAllAsync());
+            return await _departmentRepository.GetAllAsync();
         }
 
-        // GET: Departments/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/Departments/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Department>> GetDepartment(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var department = await _departmentRepository.GetByIdAsync(id);
 
-            var department = await _departmentRepository.GetByIdAsync(id.Value);
             if (department == null)
             {
                 return NotFound();
             }
 
-            return View(department);
+            return department;
         }
 
-        // GET: Departments/Create
-        public async Task<IActionResult> Create()
-        {
-            var departmentViewModel = new DepartmentViewModel();
-            departmentViewModel.Regions = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName");
-            return View(departmentViewModel);
-        }
-
-        // POST: Departments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CreationDate,DepartmentName,RegionId")] DepartmentViewModel department)
-        {
-            department.CreationDate = DateTime.Now;
-            if (ModelState.IsValid)
-            {
-                await _departmentRepository.CreateAsync(department);
-                return RedirectToAction(nameof(Index));
-            }
-            department.Regions = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName", department.RegionId);
-            return View(department);
-        }
-
-        // GET: Departments/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var department = await _departmentRepository.GetByIdAsync(id.Value);
-            if (department == null)
-            {
-                return NotFound();
-            }
-            var departmentViewModel = new DepartmentViewModel();
-            departmentViewModel.Id = department.Id;
-            departmentViewModel.Regions = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName", department.RegionId);
-            return View(departmentViewModel);
-        }
-
-        // POST: Departments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CreationDate,DepartmentName,RegionId")] DepartmentViewModel department)
+        // PUT: api/Departments/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutDepartment(int id, Department department)
         {
             if (id != department.Id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    await _departmentRepository.UpdateAsync(department);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_departmentRepository.Exists(department.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _departmentRepository.UpdateAsync(department);
             }
-            department.Regions = new SelectList(await _regionRepository.GetAllAsync(), "Id", "RegionName", department.RegionId);
-            return View(department);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_departmentRepository.Exists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: Departments/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/Departments
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Department>> PostDepartment(Department department)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            await _departmentRepository.CreateAsync(department);
 
-            var department = await _departmentRepository.GetByIdAsync(id.Value);
+            return CreatedAtAction("GetDepartment", new { id = department.Id }, department);
+        }
+
+        // DELETE: api/Departments/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteDepartment(int id)
+        {
+            var department = await _departmentRepository.GetByIdAsync(id);
             if (department == null)
             {
                 return NotFound();
             }
 
-            return View(department);
-        }
+            await _departmentRepository.DeleteAsync(department);
 
-        // POST: Departments/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _departmentRepository.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
     }
 }

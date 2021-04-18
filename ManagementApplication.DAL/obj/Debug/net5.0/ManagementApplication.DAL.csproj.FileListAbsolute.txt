@@ -10,3 +10,15 @@ C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication.DAL\obj\
 C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication.DAL\obj\Debug\net5.0\ref\ManagementApplication.DAL.dll
 C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication.DAL\obj\Debug\net5.0\ManagementApplication.DAL.pdb
 C:\Users\Alo\Documents\GitHub\WAD.Repository.7902\ManagementApplication.DAL\obj\Debug\net5.0\ManagementApplication.DAL.csprojAssemblyReference.cache
+C:\Users\Alo\Documents\WAD.Repository.7902-main\ManagementApplication.DAL\bin\Debug\net5.0\ManagementApplication.DAL.deps.json
+C:\Users\Alo\Documents\WAD.Repository.7902-main\ManagementApplication.DAL\bin\Debug\net5.0\ManagementApplication.DAL.dll
+C:\Users\Alo\Documents\WAD.Repository.7902-main\ManagementApplication.DAL\bin\Debug\net5.0\ref\ManagementApplication.DAL.dll
+C:\Users\Alo\Documents\WAD.Repository.7902-main\ManagementApplication.DAL\bin\Debug\net5.0\ManagementApplication.DAL.pdb
+C:\Users\Alo\Documents\WAD.Repository.7902-main\ManagementApplication.DAL\obj\Debug\net5.0\ManagementApplication.DAL.csprojAssemblyReference.cache
+C:\Users\Alo\Documents\WAD.Repository.7902-main\ManagementApplication.DAL\obj\Debug\net5.0\ManagementApplication.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Alo\Documents\WAD.Repository.7902-main\ManagementApplication.DAL\obj\Debug\net5.0\ManagementApplication.DAL.AssemblyInfoInputs.cache
+C:\Users\Alo\Documents\WAD.Repository.7902-main\ManagementApplication.DAL\obj\Debug\net5.0\ManagementApplication.DAL.AssemblyInfo.cs
+C:\Users\Alo\Documents\WAD.Repository.7902-main\ManagementApplication.DAL\obj\Debug\net5.0\ManagementApplication.DAL.csproj.CoreCompileInputs.cache
+C:\Users\Alo\Documents\WAD.Repository.7902-main\ManagementApplication.DAL\obj\Debug\net5.0\ManagementApplication.DAL.dll
+C:\Users\Alo\Documents\WAD.Repository.7902-main\ManagementApplication.DAL\obj\Debug\net5.0\ref\ManagementApplication.DAL.dll
+C:\Users\Alo\Documents\WAD.Repository.7902-main\ManagementApplication.DAL\obj\Debug\net5.0\ManagementApplication.DAL.pdb

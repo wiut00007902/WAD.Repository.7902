@@ -16,14 +16,22 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task CreateAsync(Employee entity)
         {
-            _context.Add(entity);
+            entity.EmploymentDate = DateTime.Now;
+            _context.Employees.Add(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async System.Threading.Tasks.Task DeleteAsync(int id)
+        public async System.Threading.Tasks.Task DeleteAsync(Employee entity)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            _context.Employees.Remove(employee);
+            foreach (var task in _context.Tasks.ToList())
+            {
+                if(task.Employee != null && task.Employee.Id == entity.Id)
+                {
+                    _context.Tasks.Remove(task);
+                }
+            }
+
+            _context.Employees.Remove(entity);
             await _context.SaveChangesAsync();
         }
 
@@ -34,19 +42,17 @@ namespace ManagementApplication.DAL.Repositories
 
         public async Task<List<Employee>> GetAllAsync()
         {
-            return await _context.Employees.Include(e => e.Department).ToListAsync();
+            return await _context.Employees.Include("Department").ToListAsync();
         }
 
         public async Task<Employee> GetByIdAsync(int id)
         {
-            return await _context.Employees
-                .Include(e => e.Department)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Employees.Include("Department").SingleOrDefaultAsync(i => i.Id == id);
         }
 
         public async System.Threading.Tasks.Task UpdateAsync(Employee entity)
         {
-            _context.Update(entity);
+            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
     }

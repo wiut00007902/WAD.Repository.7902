@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ManagementApplication.DAL;
-using ManagementApplication.Models;
-using ManagementApplication.DAL.Repositories;
 using ManagementApplication.DAL.DBO;
+using ManagementApplication.DAL.Repositories;
 
 namespace ManagementApplication.Controllers
 {
-    public class RegionsController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class RegionsController : ControllerBase
     {
         private readonly IRepository<Region> _regionRepository;
 
@@ -21,125 +22,79 @@ namespace ManagementApplication.Controllers
             _regionRepository = regionRepository;
         }
 
-        // GET: Regions
-        public async Task<IActionResult> Index()
+        // GET: api/Regions
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Region>>> GetRegions()
         {
-            return View(await _regionRepository.GetAllAsync());
+            return await _regionRepository.GetAllAsync();
         }
 
-        // GET: Regions/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/Regions/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Region>> GetRegion(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var region = await _regionRepository.GetByIdAsync(id);
 
-            var region = await _regionRepository.GetByIdAsync(id.Value);
             if (region == null)
             {
                 return NotFound();
             }
 
-            return View(region);
+            return region;
         }
 
-        // GET: Regions/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Regions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RegionName,CreationDate")] Region region)
-        {
-            if (ModelState.IsValid)
-            {
-                region.CreationDate = DateTime.Now;
-                await _regionRepository.CreateAsync(region);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(region);
-        }
-
-        // GET: Regions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var region = await _regionRepository.GetByIdAsync(id.Value);
-            if (region == null)
-            {
-                return NotFound();
-            }
-            return View(region);
-        }
-
-        // POST: Regions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RegionName,CreationDate")] Region region)
+        // PUT: api/Regions/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutRegion(int id, Region region)
         {
             if (id != region.Id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    await _regionRepository.UpdateAsync(region);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_regionRepository.Exists(region.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _regionRepository.UpdateAsync(region);
             }
-            return View(region);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_regionRepository.Exists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: Regions/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/Regions
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Region>> PostRegion(Region region)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            await _regionRepository.CreateAsync(region);
 
-            var region = await _regionRepository.GetByIdAsync(id.Value);
+            return CreatedAtAction("GetRegion", new { id = region.Id }, region);
+        }
+
+        // DELETE: api/Regions/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRegion(int id)
+        {
+            var region = await _regionRepository.GetByIdAsync(id);
             if (region == null)
             {
                 return NotFound();
             }
 
-            return View(region);
-        }
+            await _regionRepository.DeleteAsync(region);
 
-        // POST: Regions/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _regionRepository.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
     }
 }

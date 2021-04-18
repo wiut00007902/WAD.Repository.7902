@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1>Employees</h1>
+
+    <p>
+        <a href="#!/createEmployee">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Employee name
+                </th>
+                <th>
+                    Department
+                </th>
+                <th>
+                    Position
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="employee in employees">
+                <td>
+                    {{employee.firstName}} {{employee.lastName}}
+                </td>
+
+                <td>
+                    <a href="#!/departmentDetails/{{employee.department.id}}">{{employee.department.departmentName}}</a>
+                </td>
+
+                <td>
+                    {{employee.position}}
+                </td>
+
+                <td>
+                    <a href="#!/editEmployee/{{employee.id}}">Edit</a> |
+                    <a href="#!/employeeDetails/{{employee.id}}">Details</a> |
+                    <a href="#!/deleteEmployee/{{employee.id}}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

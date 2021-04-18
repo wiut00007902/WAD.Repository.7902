@@ -2,154 +2,99 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ManagementApplication.DAL;
-using ManagementApplication.Models;
-using ManagementApplication.DAL.Repositories;
 using ManagementApplication.DAL.DBO;
+using ManagementApplication.DAL.Repositories;
 
 namespace ManagementApplication.Controllers
 {
-    public class EmployeesController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class EmployeesController : ControllerBase
     {
         private readonly IRepository<Employee> _employeeRepository;
-        private readonly IRepository<Department> _departmentRepository;
 
-        public EmployeesController(IRepository<Employee> employeeRepository,
-            IRepository<Department> departmentRepository)
+        public EmployeesController(IRepository<Employee> employeeRepository)
         {
             _employeeRepository = employeeRepository;
-            _departmentRepository = departmentRepository;
         }
 
-        // GET: Employees
-        public async Task<IActionResult> Index()
+        // GET: api/Employees
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
-            return View(await _employeeRepository.GetAllAsync());
+            return await _employeeRepository.GetAllAsync();
         }
 
-        // GET: Employees/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/Employees/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var employee = await _employeeRepository.GetByIdAsync(id);
 
-            var employee = await _employeeRepository.GetByIdAsync(id.Value);
             if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return employee;
         }
 
-        // GET: Employees/Create
-        public async Task<IActionResult> Create()
-        {
-            var employeeViewModel = new EmployeeViewModel();
-            employeeViewModel.Departments = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName");
-            return View(employeeViewModel);
-        }
-
-        // POST: Employees/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,DateOfBirth,Gender,PassportNo,Address,Phone,Email,DepartmentId,Position,Salary,Schedule,EmploymentDate")] EmployeeViewModel employee)
-        {
-            employee.EmploymentDate = DateTime.Now;
-            if (ModelState.IsValid)
-            {
-                await _employeeRepository.CreateAsync(employee);
-                return RedirectToAction(nameof(Index));
-            }
-            employee.Departments = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName", employee.DepartmentId);
-            return View(employee);
-        }
-
-        // GET: Employees/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employee = await _employeeRepository.GetByIdAsync(id.Value);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-            var employeeViewModel = new EmployeeViewModel();
-            employeeViewModel.Id = employee.Id;
-            employeeViewModel.Departments = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName", employee.DepartmentId);
-            return View(employeeViewModel);
-        }
-
-        // POST: Employees/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,DateOfBirth,Gender,PassportNo,Address,Phone,Email,DepartmentId,Position,Salary,Schedule,EmploymentDate")] EmployeeViewModel employee)
+        // PUT: api/Employees/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutEmployee(int id, Employee employee)
         {
             if (id != employee.Id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    await _employeeRepository.UpdateAsync(employee);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_employeeRepository.Exists(employee.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _employeeRepository.UpdateAsync(employee);
             }
-            employee.Departments = new SelectList(await _departmentRepository.GetAllAsync(), "Id", "DepartmentName", employee.DepartmentId);
-            return View(employee);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_employeeRepository.Exists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: Employees/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/Employees
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            await _employeeRepository.CreateAsync(employee);
 
-            var employee = await _employeeRepository.GetByIdAsync(id.Value);
+            return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
+        }
+
+        // DELETE: api/Employees/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEmployee(int id)
+        {
+            var employee = await _employeeRepository.GetByIdAsync(id);
             if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
-        }
+            await _employeeRepository.DeleteAsync(employee);
 
-        // POST: Employees/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _employeeRepository.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
     }
 }
