@@ -25,7 +25,7 @@ namespace ManagementApplication.DAL.Repositories
         {
             foreach (var department in _context.Departments.ToList())
             {
-                if (department.Region.Id == entity.Id)
+                if (department.Region != null && department.Region.Id == entity.Id)
                 {
                     _context.Departments.Remove(department);
                 }

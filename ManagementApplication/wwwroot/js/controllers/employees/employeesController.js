@@ -5,13 +5,6 @@
             .then(function (response) {
                 $scope.employees = response.data;
             })
-
-        $scope.deleteEmployee = function (employee) {
-            $http.delete('api/Employees/' + employee.id).then(function (response) {
-                var index = $scope.employees.indexOf(employee);
-                $scope.employees.splice(index, 1);
-            })
-        }
     }]);
 
 managementApplication

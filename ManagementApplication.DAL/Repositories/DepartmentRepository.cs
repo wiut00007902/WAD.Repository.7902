@@ -24,7 +24,7 @@ namespace ManagementApplication.DAL.Repositories
         {
             foreach (var employee in _context.Employees.ToList())
             {
-                if (employee.Department.Id == entity.Id)
+                if (employee.Department != null && employee.Department.Id == entity.Id)
                 {
                     _context.Employees.Remove(employee);
                 }
@@ -46,7 +46,7 @@ namespace ManagementApplication.DAL.Repositories
 
         public async Task<Department> GetByIdAsync(int id)
         {
-            return await _context.Departments.FindAsync(id);
+            return await _context.Departments.Include("Region").SingleOrDefaultAsync(i => i.Id == id);
         }
 
         public async System.Threading.Tasks.Task UpdateAsync(Department entity)

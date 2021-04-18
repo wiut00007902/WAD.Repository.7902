@@ -5,15 +5,12 @@
     <title></title>
 </head>
 <body>
-
     <h1>Employees</h1>
 
     <p>
         <a href="#!/createEmployee">Create New</a>
     </p>
-
     <table class="table">
-
         <thead>
             <tr>
                 <th>
@@ -42,15 +39,14 @@
                 <td>
                     {{employee.position}}
                 </td>
-                    
+
                 <td>
                     <a href="#!/editEmployee/{{employee.id}}">Edit</a> |
-                    <a href="">Details</a> |
-                    <a href="" ng-click="deleteEmployee(employee)">Delete</a>
+                    <a href="#!/employeeDetails/{{employee.id}}">Details</a> |
+                    <a href="#!/deleteEmployee/{{employee.id}}">Delete</a>
                 </td>
             </tr>
         </tbody>
-
     </table>
 </body>
 </html>

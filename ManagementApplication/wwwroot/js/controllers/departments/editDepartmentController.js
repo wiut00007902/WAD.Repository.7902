@@ -2,8 +2,7 @@
     .controller('EditDepartmentController', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
         $scope.department =
         {
-            departmentName: '',
-            regionId: 0,
+            regionId: 0
         };
 
         $scope.departmentRegion =

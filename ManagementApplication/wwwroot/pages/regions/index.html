@@ -5,15 +5,12 @@
     <title></title>
 </head>
 <body>
-
     <h1>Regions</h1>
 
     <p>
         <a href="#!/createRegion">Create New</a>
     </p>
-
     <table class="table">
-
         <thead>
             <tr>
                 <th>
@@ -22,7 +19,6 @@
                 <th></th>
             </tr>
         </thead>
-
         <tbody>
             <tr ng-repeat="region in regions">
                 <td>
@@ -30,12 +26,11 @@
                 </td>
                 <td>
                     <a href="#!/editRegion/{{region.id}}">Edit</a> |
-                    <a href="">Details</a> |
-                    <a href="" ng-click="deleteRegion(region)">Delete</a>
+                    <a href="#!/regionDetails/{{region.id}}">Details</a> |
+                    <a href="#!/deleteRegion/{{region.id}}">Delete</a>
                 </td>
             </tr>
         </tbody>
-
     </table>
 
 </body>

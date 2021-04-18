@@ -25,7 +25,7 @@ namespace ManagementApplication.DAL.Repositories
         {
             foreach (var task in _context.Tasks.ToList())
             {
-                if(task.Employee.Id == entity.Id)
+                if(task.Employee != null && task.Employee.Id == entity.Id)
                 {
                     _context.Tasks.Remove(task);
                 }
@@ -47,7 +47,7 @@ namespace ManagementApplication.DAL.Repositories
 
         public async Task<Employee> GetByIdAsync(int id)
         {
-            return await _context.Employees.FindAsync(id);
+            return await _context.Employees.Include("Department").SingleOrDefaultAsync(i => i.Id == id);
         }
 
         public async System.Threading.Tasks.Task UpdateAsync(Employee entity)

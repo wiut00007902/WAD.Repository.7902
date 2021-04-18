@@ -5,13 +5,6 @@
             .then(function (response) {
                 $scope.tasks = response.data;
             })
-
-        $scope.deleteTask = function (task) {
-            $http.delete('api/Tasks/' + task.id).then(function (response) {
-                var index = $scope.tasks.indexOf(task);
-                $scope.tasks.splice(index, 1);
-            })
-        }
     }]);
 
 managementApplication

@@ -5,13 +5,6 @@
             .then(function (response) {
                 $scope.departments = response.data;
             })
-
-        $scope.deleteDepartment = function (department) {
-            $http.delete('api/Departments/' + department.id).then(function (response) {
-                var index = $scope.departments.indexOf(department);
-                $scope.departments.splice(index, 1);
-            })
-        }
     }]);
 
 managementApplication

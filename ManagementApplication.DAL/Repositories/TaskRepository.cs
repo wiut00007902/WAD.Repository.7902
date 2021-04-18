@@ -15,6 +15,7 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task CreateAsync(DBO.Task entity)
         {
+            entity.CreationTime = DateTime.Now;
             _context.Tasks.Add(entity);
             await _context.SaveChangesAsync();
         }
@@ -37,7 +38,7 @@ namespace ManagementApplication.DAL.Repositories
 
         public async Task<DBO.Task> GetByIdAsync(int id)
         {
-            return await _context.Tasks.FindAsync(id);
+            return await _context.Tasks.Include("Employee").SingleOrDefaultAsync(i => i.Id == id);
         }
 
         public async System.Threading.Tasks.Task UpdateAsync(DBO.Task entity)

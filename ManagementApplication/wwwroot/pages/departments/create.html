@@ -10,31 +10,24 @@
     <h4>Department</h4>
     <hr />
     <div class="row">
-
         <div class="col-md-4">
-
-            <!-- Input for the department name -->
-
-            <div class="form-group">
-                <label class="control-label">Department name</label>
-                <input class="form-control" ng-model="department.departmentName" />
-            </div>
-
-            <!-- Selection of the region of the department -->
-
-            <div class="form-group">
-                <label class="control-label">Region</label>
-                <select class="form-control" ng-options="region as region.regionName for region in regions"
-                        ng-model="departmentRegion.region" >
-                </select>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" ng-click="addDepartment()"/>
-            </div>
-
+            <form>
+                <div class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">Department name</label>
+                    <input class="form-control" ng-model="department.departmentName" />
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Region</label>
+                    <select class="form-control" ng-options="region as region.regionName for region in regions"
+                        ng-model="departmentRegion.region"></select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" ng-click="addDepartment()" />
+                </div>
+            </form>
         </div>
-
     </div>
 
     <div>

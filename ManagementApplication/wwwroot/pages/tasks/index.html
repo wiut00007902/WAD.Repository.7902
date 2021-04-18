@@ -10,9 +10,7 @@
     <p>
         <a href="#!/createTask">Create New</a>
     </p>
-
     <table class="table">
-
         <thead>
             <tr>
                 <th>
@@ -44,12 +42,11 @@
 
                 <td>
                     <a href="#!/editTask/{{task.id}}">Edit</a> |
-                    <a href="">Details</a> |
-                    <a href="" ng-click="deleteTask(task)">Delete</a>
+                    <a href="#!/taskDetails/{{task.id}}">Details</a> |
+                    <a href="#!/deleteTask/{{task.id}}">Delete</a>
                 </td>
             </tr>
         </tbody>
-
     </table>
 </body>
 </html>
