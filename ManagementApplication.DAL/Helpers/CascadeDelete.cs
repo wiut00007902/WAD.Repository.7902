@@ -62,10 +62,5 @@ namespace ManagementApplication.DAL.Helpers
                 }
             }
         }
-
-        public CascadeDelete(DBO.Task task, ManagementApplicationDbContext context)
-        {
-
-        }
     }
 }

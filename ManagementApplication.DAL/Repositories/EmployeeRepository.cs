@@ -17,10 +17,7 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task CreateAsync(Employee entity)
         {
-            new CreationDateSet(entity);
-
-            _context.Employees.Add(entity);
-            await _context.SaveChangesAsync();
+            await CreateDbo.Create(entity, _context);
         }
 
         public async System.Threading.Tasks.Task DeleteAsync(Employee entity)
