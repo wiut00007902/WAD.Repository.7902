@@ -15,13 +15,15 @@ namespace ManagementApplication.Controllers
     [ApiController]
     public class RegionsController : ControllerBase
     {
+        // Declare IRepository object.
         private readonly IRepository<Region> _regionRepository;
-
+        // Creating RegionsController constructor, that initialize
+        // _regionRepository to the passed parameter regionRepository
         public RegionsController(IRepository<Region> regionRepository)
         {
             _regionRepository = regionRepository;
         }
-
+        #region GET
         // GET: api/Regions
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Region>>> GetRegions()
@@ -42,7 +44,8 @@ namespace ManagementApplication.Controllers
 
             return region;
         }
-
+        #endregion
+        #region PUT
         // PUT: api/Regions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -71,7 +74,8 @@ namespace ManagementApplication.Controllers
 
             return NoContent();
         }
-
+        #endregion
+        #region POST
         // POST: api/Regions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -81,7 +85,8 @@ namespace ManagementApplication.Controllers
 
             return CreatedAtAction("GetRegion", new { id = region.Id }, region);
         }
-
+        #endregion
+        #region DELETE
         // DELETE: api/Regions/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRegion(int id)
@@ -96,5 +101,6 @@ namespace ManagementApplication.Controllers
 
             return NoContent();
         }
+        #endregion
     }
 }

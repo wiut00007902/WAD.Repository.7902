@@ -15,20 +15,22 @@ namespace ManagementApplication.Controllers
     [ApiController]
     public class DepartmentsController : ControllerBase
     {
+        // Declare IRepository object.
         private readonly IRepository<Department> _departmentRepository;
-
+        // Creating DepartmentsController constructor, that initialize
+        // _departmentRepository to the passed parameter departmentRepository
         public DepartmentsController(IRepository<Department> departmentRepository)
         {
             _departmentRepository = departmentRepository;
         }
-
+        #region GET
         // GET: api/Departments
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
             return await _departmentRepository.GetAllAsync();
         }
-
+        
         // GET: api/Departments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Department>> GetDepartment(int id)
@@ -42,7 +44,8 @@ namespace ManagementApplication.Controllers
 
             return department;
         }
-
+        #endregion
+        #region PUT
         // PUT: api/Departments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -71,7 +74,8 @@ namespace ManagementApplication.Controllers
 
             return NoContent();
         }
-
+        #endregion
+        #region POST
         // POST: api/Departments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -81,7 +85,8 @@ namespace ManagementApplication.Controllers
 
             return CreatedAtAction("GetDepartment", new { id = department.Id }, department);
         }
-
+        #endregion
+        #region DELETE
         // DELETE: api/Departments/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDepartment(int id)
@@ -96,5 +101,6 @@ namespace ManagementApplication.Controllers
 
             return NoContent();
         }
+        #endregion
     }
 }

@@ -15,13 +15,15 @@ namespace ManagementApplication.Controllers
     [ApiController]
     public class TasksController : ControllerBase
     {
+        // Declare IRepository object.
         private readonly IRepository<DAL.DBO.Task> _taskRepository;
-
+        // Creating TasksController constructor, that initialize
+        // _taskRepository to the passed parameter taskRepository
         public TasksController(IRepository<DAL.DBO.Task> taskRepository)
         {
             _taskRepository = taskRepository;
         }
-
+        #region GET
         // GET: api/Tasks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DAL.DBO.Task>>> GetTasks()
@@ -42,7 +44,8 @@ namespace ManagementApplication.Controllers
 
             return task;
         }
-
+        #endregion
+        #region PUT
         // PUT: api/Tasks/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -71,7 +74,8 @@ namespace ManagementApplication.Controllers
 
             return NoContent();
         }
-
+        #endregion
+        #region POST
         // POST: api/Tasks
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -81,7 +85,8 @@ namespace ManagementApplication.Controllers
 
             return CreatedAtAction("GetTask", new { id = task.Id }, task);
         }
-
+        #endregion
+        #region DELETE
         // DELETE: api/Tasks/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTask(int id)
@@ -92,9 +97,10 @@ namespace ManagementApplication.Controllers
                 return NotFound();
             }
 
-            _taskRepository.DeleteAsync(task);
+            await _taskRepository.DeleteAsync(task);
 
             return NoContent();
         }
+        #endregion
     }
 }

@@ -15,10 +15,12 @@ namespace ManagementApplication.DAL.Repositories
         {
         }
         #endregion
-        // Method for creation new task.
+        // Method for creation the new task.
         #region Create
         public async System.Threading.Tasks.Task CreateAsync(DBO.Task entity)
         {
+            // Calling method Create from CreateDbo class. Passing the required values.
+            // Entity value will choose proper method from all Create methods in CreateDbo class.
             await CreateDbo.Create(entity, _context);
         }
         #endregion
@@ -26,6 +28,8 @@ namespace ManagementApplication.DAL.Repositories
         #region Delete
         public async System.Threading.Tasks.Task DeleteAsync(DBO.Task entity)
         {
+            // Calling method Delete from DeleteDbo class. Passing the required values.
+            // Entity value will choose proper method from all Delete methods in DeleteDbo class.
             await DeleteDbo.Delete(entity, _context);
         }
         #endregion
@@ -33,6 +37,9 @@ namespace ManagementApplication.DAL.Repositories
         #region Exists
         public bool Exists(int id)
         {
+            // Method scans through all tasks and returns 'true'
+            // if there is a match with passed parameter 'id'.
+            // Otherwise, it returns 'false'.
             return _context.Tasks.Any(e => e.Id == id);
         }
         #endregion
@@ -40,6 +47,8 @@ namespace ManagementApplication.DAL.Repositories
         #region GetAll
         public async Task<List<DBO.Task>> GetAllAsync()
         {
+            // Method gets all data from Task table and converts it to
+            // list asynchronous, including data about Employee.
             return await _context.Tasks.Include("Employee").ToListAsync();
         }
         #endregion
@@ -47,6 +56,8 @@ namespace ManagementApplication.DAL.Repositories
         #region GetById
         public async Task<DBO.Task> GetByIdAsync(int id)
         {
+            // Method searches task by ID passed in parameters. Then it returns all
+            // information about found entity, including information about Employee.
             return await _context.Tasks.Include("Employee").SingleOrDefaultAsync(i => i.Id == id);
         }
         #endregion
@@ -54,6 +65,8 @@ namespace ManagementApplication.DAL.Repositories
         #region Update
         public async System.Threading.Tasks.Task UpdateAsync(DBO.Task entity)
         {
+            // Calling method Update from UpdateDbo class. Passing the required values.
+            // Entity value will choose proper method from all Create methods in CreateDbo class.
             await UpdateDbo.Update(entity, _context);
         }
         #endregion

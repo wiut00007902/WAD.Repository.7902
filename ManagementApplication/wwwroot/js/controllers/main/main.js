@@ -1,10 +1,7 @@
-﻿var managementApplication = angular.module('ManagementApplicationSPA', ['ngRoute']);
+﻿// Create AngularJS application.
+var managementApplication = angular.module('ManagementApplicationSPA', ['ngRoute']);
 
-managementApplication
-    .controller('IndexController', ['$scope', '$http', function ($scope, $http) {
-        $scope.message = 'Welcome text';
-    }]);
-
+// Add the default configuration to the application. 
 managementApplication.config(function ($routeProvider) {
     $routeProvider
         .when('/',
@@ -12,6 +9,8 @@ managementApplication.config(function ($routeProvider) {
                 templateUrl: 'pages/home/index.html',
                 controller: 'IndexController'
             })
+        // If link is not defined in configurations, then user will
+        // be redirected to the default page.
         .otherwise({
             redirectTo: '/'
         });

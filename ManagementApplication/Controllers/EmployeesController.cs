@@ -15,13 +15,15 @@ namespace ManagementApplication.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
+        // Declare IRepository object.
         private readonly IRepository<Employee> _employeeRepository;
-
+        // Creating EmployeesController constructor, that initialize
+        // _employeeRepository to the passed parameter employeeRepository
         public EmployeesController(IRepository<Employee> employeeRepository)
         {
             _employeeRepository = employeeRepository;
         }
-
+        #region GET
         // GET: api/Employees
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
@@ -42,7 +44,8 @@ namespace ManagementApplication.Controllers
 
             return employee;
         }
-
+        #endregion
+        #region PUT
         // PUT: api/Employees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -71,7 +74,8 @@ namespace ManagementApplication.Controllers
 
             return NoContent();
         }
-
+        #endregion
+        #region POST
         // POST: api/Employees
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -81,7 +85,8 @@ namespace ManagementApplication.Controllers
 
             return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
         }
-
+        #endregion
+        #region DELETE
         // DELETE: api/Employees/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
@@ -96,5 +101,6 @@ namespace ManagementApplication.Controllers
 
             return NoContent();
         }
+        #endregion
     }
 }

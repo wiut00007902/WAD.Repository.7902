@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace ManagementApplication.DAL.Repositories
 {
+    // Interface for repositories. All methods in the interface are 
+    // asynchronous.
     public interface IRepository<T> where T: class
     {
         Task<List<T>> GetAllAsync();

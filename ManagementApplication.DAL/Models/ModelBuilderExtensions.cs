@@ -9,8 +9,11 @@ using System.Threading.Tasks;
 
 namespace ManagementApplication.DAL.Models
 {
+    // Extension for ModelBuilder class.
     public static class ModelBuilderExtensions
     {
+        // Method seeds the database with values specified bellow.
+        #region Seed
         public static void Seed(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Region>().HasData(
@@ -194,5 +197,6 @@ namespace ManagementApplication.DAL.Models
                     }
                 );
         }
+        #endregion
     }
 }
