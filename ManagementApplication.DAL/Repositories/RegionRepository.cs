@@ -1,4 +1,5 @@
 ﻿using ManagementApplication.DAL.DBO;
+using ManagementApplication.DAL.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,27 +24,7 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task DeleteAsync(Region entity)
         {
-            foreach (var department in _context.Departments.ToList())
-            {
-                if (department.Region != null && department.Region.Id == entity.Id)
-                {
-                    foreach (var employee in _context.Employees.ToList())
-                    {
-                        if (employee.Department != null && employee.Department.Id == department.Id)
-                        {
-                            foreach (var task in _context.Tasks.ToList())
-                            {
-                                if (task.Employee != null && task.EmployeeId == employee.Id)
-                                {
-                                    _context.Tasks.Remove(task);
-                                }
-                            }
-                            _context.Employees.Remove(employee);
-                        }
-                    }
-                    _context.Departments.Remove(department);
-                }
-            }
+            new Iterator(entity, _context);
 
             _context.Regions.Remove(entity);
             await _context.SaveChangesAsync();

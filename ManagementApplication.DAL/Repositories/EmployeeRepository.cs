@@ -1,4 +1,5 @@
 ﻿using ManagementApplication.DAL.DBO;
+using ManagementApplication.DAL.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,13 +24,7 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task DeleteAsync(Employee entity)
         {
-            foreach (var task in _context.Tasks.ToList())
-            {
-                if(task.Employee != null && task.Employee.Id == entity.Id)
-                {
-                    _context.Tasks.Remove(task);
-                }
-            }
+            new CascadeDelete(entity, _context);
 
             _context.Employees.Remove(entity);
             await _context.SaveChangesAsync();
