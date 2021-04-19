@@ -21,10 +21,7 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task DeleteAsync(Department entity)
         {
-            new CascadeDelete(entity, _context);
-
-            _context.Departments.Remove(entity);
-            await _context.SaveChangesAsync();
+            await DeleteDbo.Delete(entity, _context);
         }
 
         public bool Exists(int id)

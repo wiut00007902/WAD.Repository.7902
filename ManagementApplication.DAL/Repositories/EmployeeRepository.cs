@@ -22,10 +22,7 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task DeleteAsync(Employee entity)
         {
-            new CascadeDelete(entity, _context);
-
-            _context.Employees.Remove(entity);
-            await _context.SaveChangesAsync();
+            await DeleteDbo.Delete(entity, _context);
         }
 
         public bool Exists(int id)
