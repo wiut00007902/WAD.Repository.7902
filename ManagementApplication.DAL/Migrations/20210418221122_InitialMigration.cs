@@ -140,7 +140,7 @@ namespace ManagementApplication.DAL.Migrations
                     { 1, new DateTime(2020, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2021, 4, 18, 23, 11, 21, 699, DateTimeKind.Local).AddTicks(7529), 1, "John Smith should properly manage employees", "Manage employees" },
                     { 2, new DateTime(2020, 5, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2021, 4, 18, 23, 11, 21, 701, DateTimeKind.Local).AddTicks(7315), 2, "Phillip Walsh should create software", "Create software" },
                     { 3, new DateTime(2020, 8, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2021, 4, 18, 23, 11, 21, 701, DateTimeKind.Local).AddTicks(7348), 3, "Dora Williamson should create a great product design", "Create a product design" },
-                    { 4, new DateTime(2020, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2021, 4, 18, 23, 11, 21, 701, DateTimeKind.Local).AddTicks(7354), 4, "Nadeem Liu should make a research", "Manage employees" }
+                    { 4, new DateTime(2020, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2021, 4, 18, 23, 11, 21, 701, DateTimeKind.Local).AddTicks(7354), 4, "Nadeem Liu should make a research", "Make a research" }
                 });
 
             migrationBuilder.CreateIndex(

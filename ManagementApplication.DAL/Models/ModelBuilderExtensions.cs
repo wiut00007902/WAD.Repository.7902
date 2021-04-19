@@ -187,7 +187,7 @@ namespace ManagementApplication.DAL.Models
                     {
                         Id = 4,
                         CreationTime = new(2020, 1, 2),
-                        TaskName = "Manage employees",
+                        TaskName = "Make a research",
                         TaskDescription = "Nadeem Liu should make a research",
                         EmployeeId = 4,
                         Deadline = DateTime.Now

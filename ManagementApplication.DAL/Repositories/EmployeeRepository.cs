@@ -42,8 +42,7 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task UpdateAsync(Employee entity)
         {
-            _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            await UpdateDbo.Update(entity, _context);
         }
     }
 }
