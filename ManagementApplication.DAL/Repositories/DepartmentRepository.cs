@@ -16,7 +16,8 @@ namespace ManagementApplication.DAL.Repositories
         }
         public async System.Threading.Tasks.Task CreateAsync(Department entity)
         {
-            entity.CreationDate = DateTime.Now;
+            new CreationDateSet(entity);
+
             _context.Departments.Add(entity);
             await _context.SaveChangesAsync();
         }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ManagementApplication.DAL.Helpers
 {
-    public class Iterator
+    public class CascadeDelete
     {
-        public Iterator(Employee employee, ManagementApplicationDbContext context)
+        public CascadeDelete(Employee employee, ManagementApplicationDbContext context)
         {
             foreach (var task in context.Tasks.ToList())
             {
@@ -20,7 +20,7 @@ namespace ManagementApplication.DAL.Helpers
             }
         }
 
-        public Iterator(Department department, ManagementApplicationDbContext context)
+        public CascadeDelete(Department department, ManagementApplicationDbContext context)
         {
             foreach (var employee in context.Employees.ToList())
             {
@@ -38,7 +38,7 @@ namespace ManagementApplication.DAL.Helpers
             }
         }
         
-        public Iterator(Region region, ManagementApplicationDbContext context)
+        public CascadeDelete(Region region, ManagementApplicationDbContext context)
         {
             foreach (var department in context.Departments.ToList())
             {
@@ -61,6 +61,11 @@ namespace ManagementApplication.DAL.Helpers
                     context.Departments.Remove(department);
                 }
             }
+        }
+
+        public CascadeDelete(DBO.Task task, ManagementApplicationDbContext context)
+        {
+
         }
     }
 }

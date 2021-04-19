@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ManagementApplication.DAL.Helpers;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task CreateAsync(DBO.Task entity)
         {
-            entity.CreationTime = DateTime.Now;
+            new CreationDateSet(entity);
+
             _context.Tasks.Add(entity);
             await _context.SaveChangesAsync();
         }

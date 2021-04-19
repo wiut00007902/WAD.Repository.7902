@@ -17,14 +17,15 @@ namespace ManagementApplication.DAL.Repositories
 
         public async System.Threading.Tasks.Task CreateAsync(Region entity)
         {
-            entity.CreationDate = DateTime.Now;
+            new CreationDateSet(entity);
+
             _context.Regions.Add(entity);
             await _context.SaveChangesAsync();
         }
 
         public async System.Threading.Tasks.Task DeleteAsync(Region entity)
         {
-            new Iterator(entity, _context);
+            new CascadeDelete(entity, _context);
 
             _context.Regions.Remove(entity);
             await _context.SaveChangesAsync();
